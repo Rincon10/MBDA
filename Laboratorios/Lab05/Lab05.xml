@@ -1,0 +1,810 @@
+/* Laboratorio 05 
+
+
+
+A. Explorando*/
+
+1. Explore el archivo usando un navegador y un editor.
+¿Cuáles son las ventajas de uno u otro?
+se logra encontrar una mejor estructura en el navegador, frente a el editor
+
+2.Describa la información que encuentra en el archivo
+
+En el archivo se encuentra la informacion detallada del personal y asignaturas de los departamentos de una institucion educativa.
+
+
+
+
+B. Consultas iniciales
+
+Punto 1)¿De cuáles departamentos se tiene información?
+[a. Nombre con etiqueta] [b. Nombre sin etiqueta] [c. Código] 
+
+1.a)
+//Department/Title
+
+1.b)
+//Department/Title/text()
+
+1.c)
+//Department/@Code
+
+Punto 2)¿Cuál es la información del curso Introduction to Databases?
+[a. Toda la información] [b. Todos los atributos] [c. Todas las etiquetas]
+
+2.a)
+//Course[Title/text() = "Introduction to Databases"]
+
+
+2.b)
+//Course[Title/text() = "Introduction to Databases"]/@*
+
+
+2.c)
+//Course[Title/text() = "Introduction to Databases"]/*
+
+Punto 3)¿Cuántos cursos están detallados?
+count(//Course[Description]/Title/text())
+
+¿Cuáles son? [Nombre]
+//Course[Description]/Title/text()
+
+
+
+4)¿Cuál es el total de inscripciones de los cursos? 
+sum(//Course/@Enrollment)
+
+5)¿De cuáles cursos no se conoce el número de inscritos? [Nombre]
+//Course[not(@Enrollment)]/Title/text()
+
+
+6)¿Cuáles cursos son iniciales (no tienen prerrequisitos)? [Nombre]
+//Course[not(Prerequisites)]/Title/text()
+
+7)¿Cuáles cursos son finales (no son prerrequisitos de ninguno)? [Nombre]
+//Course[not(//Course/Prerequisites/Prereq/text() = @Number)]/Title/text()
+
+8)¿Cuáles cursos tienen como instructores al director de su departamento? [Nombre]
+(Los profesores se pueden identificar por su apellido) 
+
+//Department/Course[//Chair/Professor/Last_Name/text() = Instructors/Professor/Last_Name/text()]/Title/text()
+
+9)¿Cuáles cursos de un departamento tienen el mismo profesor? [Nombre]
+(Los profesores se pueden identificar por su apellido) 
+
+//Department/Course[Instructors/Professor/Last_Name/text() = parent::*/Course/Instructors/Professor/Last_Name/text() and @Number != parent::*/Course/@Number]/Title/text()
+
+
+10) ¿Cuáles directores de departamento no colaboran en cursos?[Toda la información]
+(Los profesores se pueden identificar por su apellido) 
+
+//Department/Chair[not(Professor/Last_Name/text() = parent::*/Course/Instructors/Professor/Last_Name/text()) ]/Professor
+
+
+B. Consultas quiz Standford
+
+1. Return all Title elements (of both departments and courses).  (16)
+
+//Title
+
+2. Return last names of all department chairs. (3)
+//Chair/Professor/Last_Name/text()
+
+3. Return titles of courses with enrollment greater than 500. (2)
+
+//Course[@Enrollment > 500]
+
+4. Return titles of departments that have some course that takes "CS106B" as a prerequisite. (2)
+//Department[Course/Prerequisites/Prereq = "CS106B"]/Title/text()
+
+5. Return last names of all professors or lecturers who use a middle initial. Don't worry about eliminating
+duplicates. (5)
+//(Professor|Lecturer)[Middle_Initial]
+
+6. Return the title of courses that have a cross-listed course (i.e., that have "Cross-listed" in their
+description). (2)
+//Course[contains(Description/text() ,"Cross-listed")]/Title/text()
+
+7. Return the enrollment of all courses in the CS department. (10)
+//Department[@Code= "CS" ]/Course /@Enrollment
+
+8. Return last names of instructors teaching at least one course that has "system" in its description and
+enrollment greater than 100. (2)
+//Course[contains(Description/text(),"system") and (@Enrollment> 100) ]/Instructors/(Professor|Lecturer)/Last_Name/text()
+
+9. Return the title of the course with more than 2 instructors (*)(1)
+//Department/Course[count(Instructors/*)>2]/Title/text()
+
+10. Return course numbers of courses that have the same title as some other course. (Hint: You might want to
+use the "preceding" and "following" navigation axes for this query, which were not covered in the video or
+our demo script; they match any preceding or following node, not just siblings.) (2)
+//Course[Title/text() = following::*/Title/text() or Title/text() = preceding::*/Title/text()]/@Number
+
+11. Return the courses numbers of courses that have no lecturers as instructors. (*)(10)
+//Department/Course[Instructors[not(Lecturer)]]/@Number
+
+12. Return titles of courses taught by the chair of a department. For this question, you may assume that all
+professors have distinct last names. (1)
+//Course[parent::*/Chair/Professor/Last_Name/text() = Instructors/Professor/Last_Name/text()]/Title/text()
+
+13. Return titles of courses taught by a professor with the last name "Ng" and by a professor with the last
+name "Thrun". (*)(1)
+//Course[Instructors/Professor[Last_Name/text() = "Ng"] and Instructors/Professor[Last_Name/text() = "Thrun"] ]/Title/text()
+
+14. Return course numbers of courses that have a course taught by Eric Roberts as a prerequisite. (4)
+//Course[Prerequisites/Prereq/text()=/*//Course[Instructors/Professor[First_Name/text()="Eric"and Last_Name/text()="Roberts"]]/@Number]/@Number
+
+15. Return last names of instructors teachiing at least one course that has system in its description and
+enrollment greater than 100.(2)
+//Course[contains(Description/text(),"system") and (@Enrollment> 100) ]/Instructors/(Professor|Lecturer)/Last_Name/text()
+
+C. Consultas propias
+1) consultar el numero total de todos los matriculados en el departamento "CS"
+sum(//Department[@Code = "CS"]/Course/@Enrollment)
+
+2) mostrar todos los cursos del departamento "CS"  
+//Department[@Code = "CS"]/Course/Title/text()
+
+3)mostrar los cursos que tienen como prerrequisito la materia "Introduction to Probability for Computer Scientists"
+//Department/Course[//Course[contains(Title/text(),"Introduction to Probability for Computer Scientists")]/@Number =Prerequisites/Prereq/text()]/@Number
+
+4)mostrar los nombres de profesores o instructores que tengan por apellido "Roberts" (con repeticion )
+//(Professor|Instructors)[Last_Name/text() = "Roberts"]/First_Name/text()
+
+5) contar cuantos conferenciantes hay en el departamento "CS"
+count(//Department[@Code = "CS"]/Course/Instructors/Lecturer)
+
+D. Esquema
+DTD
+
+<?xml version="1.0"?>
+<!DOCTYPE Course_Catalog [
+  <!ELEMENT Course_Catalog (Department+)>
+	<!ELEMENT Department (Title,Chair,Course+)>
+  <!ATTLIST Department Code ID #REQUIRED>
+	<!ELEMENT Chair (Professor)>
+  <!ATTLIST Course 
+	                 Number ID #REQUIRED
+                   Enrollment CDATA #IMPLIED >
+	<!ELEMENT Course (Title,Description,Instructors,Prerequisites?)>
+
+	<!ELEMENT Instructors (Professor|Lecturer)+>
+
+    <!ELEMENT Professor (First_Name,Middle_Initial?,Last_Name)>
+	<!ELEMENT Lecturer (First_Name,Middle_Initial?,Last_Name)>
+
+	<!ELEMENT Prerequisites (Prereq+)>
+	<!ELEMENT Prereq (#PCDATA)>
+	<!ELEMENT Title (#PCDATA)>
+	<!ELEMENT Description (#PCDATA)>
+	<!ELEMENT First_Name (#PCDATA)>
+	<!ELEMENT Middle_Initial (#PCDATA)>
+	<!ELEMENT Last_Name (#PCDATA)>
+		
+]>
+
+E. Nuevos datos
+1)
+<Course_Catalog>
+<Department Code="DM">
+<Title>Departamento Matemáticas </Title>
+<Chair>
+<Professor>
+<First_Name>Edgar </First_Name>
+<Last_Name>Garnica</Last_Name>
+</Professor>
+</Chair>
+<Course Number="MATD">
+<Title>Matematicas Discretas</Title>
+<Description>Logica de segundo orden</Description>
+<Instructors>
+<Professor>
+<First_Name>MATEO</First_Name>
+<Last_Name>SANABRIA </Last_Name>
+</Professor>
+</Instructors>
+</Course>
+<Course Number="AYED">
+<Title>Algoritmos y Estructuras de Datos</Title>
+<Description>Diseñado Para la optimizacion de la base de datos</Description>
+<Instructors>
+<Professor>
+<First_Name>SEBASTIAN </First_Name>
+<Last_Name>MARTINEZ </Last_Name>
+</Professor>
+<Professor>
+<First_Name>GUILLERMO </First_Name>
+<Last_Name>ALVAREZ </Last_Name>
+</Professor>
+</Instructors>
+<Prerequisites>
+<Prereq>PIMB</Prereq>
+<Prereq>LCAL</Prereq>
+</Prerequisites>
+</Course>
+</Department>
+</Course_Catalog>
+2)
+<Course_Catalog>
+<Department Code="DC">
+<Title>Departamento De Ciencias Naturales</Title>
+<Chair>
+<Professor>
+<First_Name>Jaime  </First_Name>
+<Last_Name>Ceballos</Last_Name>
+</Professor>
+</Chair>
+<Course Number="FIME">
+<Title>Fisica Mecanica y de fluidos</Title>
+<Description>Analisis de la fisica mecanica</Description>
+<Instructors>
+<Professor>
+<First_Name>ANDRES</First_Name>
+<Last_Name>LONDOÑO  </Last_Name>
+</Professor>
+<Professor>
+<First_Name>RAUL </First_Name>
+<Last_Name>FANDIÑO  </Last_Name>
+</Professor>
+<Professor>
+<First_Name>DANIEL  </First_Name>
+<Last_Name>MOLANO  </Last_Name>
+</Professor>
+</Instructors>
+</Course>
+</Department>
+</Course_Catalog>
+3)
+<Course_Catalog>
+<Department Code="HM">
+<Title>Departamento De Humanidades</Title>
+<Chair>
+<Professor>
+<First_Name>José   </First_Name>
+<Last_Name>Vásquez </Last_Name>
+</Professor>
+</Chair>
+<Course Number="FCO1">
+<Title>-Fundamentos de la Comunicación 1 </Title>
+<Description> desarrollar la competencia de la comunicación</Description>
+<Instructors>
+<Professor>
+<First_Name>María </First_Name>
+<Last_Name>Negrete  </Last_Name>
+</Professor>
+<Professor>
+<First_Name>Milena </First_Name>
+<Last_Name>Mejía </Last_Name>
+</Professor>
+<Professor>
+<First_Name>María  </First_Name>
+<Last_Name>Noriega  </Last_Name>
+</Professor>
+</Instructors>
+</Course>
+</Department>
+</Course_Catalog>
+
+
+PUNTO DOS. (XML – Oracle) AfterRide. TRevisión
+1)Proponga la estructura XML necesaria para tener la información de la revisión de un
+  registro. DTD y ejemplos XML OK y XML NoOK. Explique
+
+DTD 
+<?xml version="1.0"?>
+<!DOCTYPE Revison [
+  <!ELEMENT Revison ( Secciones? )>
+  <!ELEMENT Secciones ( Sduras*, Sfaciles*, Sdescenso* )>
+  
+  <!ELEMENT Sduras EMPTY>
+  <!ATTLIST Sduras
+                  kilometroInicial CDATA #REQUIRED
+				  kilometrofinal CDATA #REQUIRED
+				  velocidadPromedio CDATA #REQUIRED
+				  velocidadMinima CDATA #REQUIRED
+				  velocidadMaxima CDATA #REQUIRED
+				  pulsacionesPromedio CDATA #REQUIRED
+				  potenciaPromedio CDATA #REQUIRED>
+  <!ELEMENT Sfaciles EMPTY>
+  <!ATTLIST Sfaciles
+                  kilometroInicial CDATA #REQUIRED
+				  kilometrofinal CDATA #REQUIRED
+				  velocidadPromedio CDATA #REQUIRED
+				  velocidadMinima CDATA #REQUIRED
+				  velocidadMaxima CDATA #REQUIRED
+				  pulsacionesPromedio CDATA #REQUIRED
+				  potenciaPromedio CDATA #REQUIRED>
+				  
+  <!ELEMENT Sdescenso EMPTY>			  
+  <!ATTLIST Sdescenso
+                  kilometroInicial CDATA #REQUIRED
+				  kilometrofinal CDATA #REQUIRED
+				  velocidadPromedio CDATA #REQUIRED
+				  velocidadMinima CDATA #REQUIRED
+				  velocidadMaxima CDATA #REQUIRED
+				  pulsacionesPromedio CDATA #REQUIRED
+				  potenciaPromedio CDATA #REQUIRED>
+  <!ELEMENT Fotos ( Foto* )>
+  <!ELEMENT Foto (#PCDATA)>
+ 
+  ]>
+XML OK
+<?xml version="1.0"?>
+<Revison>
+   <Secciones>
+       <Sduras
+              kilometroInicial = "4" 
+              velocidadPromedio = "45"
+              velocidadMaxima = "80"
+              pulsacionesPromedio = "120"
+              potenciaPromedio = "58"
+               ></Sduras>
+ 
+       <Sfaciles
+        
+              kilometroInicial = "60"
+              velocidadPromedio = "78"
+              velocidadMaxima = "58"
+              pulsacionesPromedio = "65"
+              potenciaPromedio = "45"
+                 ></Sfaciles>
+       <Sdescenso
+              kilometroInicial = "85"
+              velocidadPromedio = "40"
+              velocidadMaxima = "80"
+              pulsacionesPromedio = "65"
+              potenciaPromedio = "50"
+                  ></Sdescenso>
+  </Secciones>
+</Revison>
+
+
+XML NoOK.
+
+Salta error ya que las etiquetas no siguen el siguiente orden (Sfaciles Sdescenso Sduras)
+
+<Revison>
+   <Secciones>
+       <Sfaciles
+        
+              kilometroInicial = "60"
+              velocidadPromedio = "78"
+              velocidadMaxima = "58"
+              pulsacionesPromedio = "65"
+              potenciaPromedio = "45"
+                 ></Sfaciles>
+       <Sdescenso
+              kilometroInicial = "85"
+              velocidadPromedio = "40"
+              velocidadMaxima = "80"
+              pulsacionesPromedio = "65"
+              potenciaPromedio = "50"
+                  ></Sdescenso>
+      <Sduras
+              kilometroInicial = "4" 
+              velocidadPromedio = "45"
+              velocidadMaxima = "80"
+              pulsacionesPromedio = "120"
+              potenciaPromedio = "58"
+               ></Sduras>
+  </Secciones>
+</Revison>
+
+2)
+
+
+PoblandoOK
+
+BEGIN
+   FOR cur_rec IN (SELECT object_name, object_type
+                     FROM user_objects
+                    WHERE object_type IN
+                             ('TABLE',
+                              'VIEW',
+                              'PACKAGE',
+                              'PROCEDURE',
+                              'FUNCTION',
+                              'SEQUENCE',
+                              'SYNONYM',
+                              'PACKAGE BODY'
+                             ))
+   LOOP
+      BEGIN
+         IF cur_rec.object_type = 'TABLE'
+         THEN
+            EXECUTE IMMEDIATE    'DROP '
+                              || cur_rec.object_type
+                              || ' "'
+                              || cur_rec.object_name
+                              || '" CASCADE CONSTRAINTS';
+         ELSE
+            EXECUTE IMMEDIATE    'DROP '
+                              || cur_rec.object_type
+                              || ' "'
+                              || cur_rec.object_name
+                              || '"';
+         END IF;
+      EXCEPTION
+         WHEN OTHERS
+         THEN
+            DBMS_OUTPUT.put_line (   'FAILED: DROP '
+                                  || cur_rec.object_type
+                                  || ' "'
+                                  || cur_rec.object_name
+                                  || '"'
+                                 );
+      END;
+   END LOOP;
+END;
+/
+
+
+/*C. Construcción: creando */
+
+CREATE TABLE Registros(numero NUMBER( 5 ) NOT NULL, comentario VARCHAR( 20 ) ,fecha DATE NOT NULL ,tiempo NUMBER( 9 ) NOT NULL ,posicion NUMBER( 5 ) NOT NULL ,revision XMLTYPE ,dificultad CHAR( 1 ) NOT NULL  ,nomSegmento VARCHAR( 10 ) NOT NULL, idCiclista NUMBER( 5 ) NOT NULL ); 
+CREATE TABLE Fotos(noFoto NUMBER (5) NOT NULL,foto VARCHAR( 50 )  ,noRegistro  NUMBER( 5 ) NOT NULL );
+
+CREATE TABLE Carreras(codigo VARCHAR( 20 ) NOT NULL ,nombre VARCHAR( 30 ) ,pais VARCHAR( 15 ) , categoria NUMBER( 1 ) , periodicidad VARCHAR( 25 ) );
+CREATE TABLE Puntos(coPunto NUMBER( 5 ) NOT NULL,orden NUMBER( 2 ) NOT NULL , nombre VARCHAR( 10 ) NOT NULL ,tipo CHAR( 1 ) NOT NULL,distancia NUMBER( 8,2 ) NOT NULL ,tiempoLimite NUMBER( 9 ) NOT NULL, coCarrera VARCHAR( 20 ) NOT NULL) ;
+
+CREATE TABLE Personas( idMiembro NUMBER( 5 ) NOT NULL ,nombres VARCHAR( 50 ) NOT NULL ) ;
+CREATE TABLE Ciclistas(idPersona NUMBER( 5 ) NOT NULL ,nacimiento DATE NOT NULL ,categoria NUMBER( 1 ) NOT NULL );
+
+CREATE TABLE Versiones ( coVersion CHAR( 5 ) NOT NULL ,nombre VARCHAR( 5 ) NOT NULL  ,fecha DATE NOT NULL ,coCarrera VARCHAR( 20 ) NOT NULL );
+CREATE TABLE Segmentos( nombre VARCHAR( 10 )NOT NULL,tipo CHAR( 1 ),coVersion CHAR( 5 ) NOT NULL ,coPuntoInicio NUMBER( 5 ) NOT NULL, coPuntoFinal NUMBER( 5 ) NOT NULL ) ;
+
+
+/*CICLO 1: Primarias*/
+
+
+ALTER TABLE Versiones ADD CONSTRAINT PK_Versiones PRIMARY KEY( coVersion ) ;
+ALTER TABLE Segmentos ADD CONSTRAINT PK_Segmentos PRIMARY KEY( nombre ) ;
+
+ALTER TABLE Registros ADD CONSTRAINT PK_Registros PRIMARY KEY( numero ) ;
+ALTER TABLE Fotos ADD CONSTRAINT PK_Fotos PRIMARY KEY( noFoto ) ;
+
+ALTER TABLE Carreras ADD CONSTRAINT PK_Carreras PRIMARY KEY( codigo ) ;
+ALTER TABLE Puntos ADD CONSTRAINT PK_Puntos PRIMARY KEY( coPunto ) ;
+
+ALTER TABLE Personas ADD CONSTRAINT PK_Personas PRIMARY KEY( idMiembro ) ;
+ALTER TABLE Ciclistas ADD CONSTRAINT PK_Ciclistas PRIMARY KEY( idPersona ) ;
+
+/*CICLO 1: Únicas*/
+
+ALTER TABLE Registros ADD CONSTRAINT UK_Registros UNIQUE( comentario ) ;
+
+/*CICLO 1: Foráneas*/
+
+
+ALTER TABLE Puntos ADD CONSTRAINT FK_Puntos_coCarrera FOREIGN KEY ( coCarrera ) REFERENCES Carreras ( codigo );
+
+ALTER TABLE Segmentos ADD CONSTRAINT FK_Segmentos_coPuntoInicio FOREIGN KEY ( coPuntoInicio ) REFERENCES Puntos ( coPunto ) ;
+ALTER TABLE Segmentos ADD CONSTRAINT FK_Segmentos_coPuntoFinal FOREIGN KEY ( coPuntoFinal ) REFERENCES Puntos ( coPunto ) ;
+ALTER TABLE Segmentos ADD CONSTRAINT FK_Segmentos_coVersion FOREIGN KEY ( coVersion ) REFERENCES Versiones( coVersion ) ;
+
+ALTER TABLE Versiones ADD CONSTRAINT FK_Versiones_coCarrera FOREIGN KEY ( coCarrera ) REFERENCES Carreras( codigo ) ;
+
+ALTER TABLE Registros ADD CONSTRAINT FK_Registros_nomSegmento FOREIGN KEY  ( nomSegmento ) REFERENCES  Segmentos ( nombre );
+ALTER TABLE Registros ADD CONSTRAINT FK_Registros_idCiclista FOREIGN KEY  ( idCiclista ) REFERENCES Ciclistas( idPersona );
+
+ALTER TABLE Fotos ADD CONSTRAINT FK_Fotos_noRegistro FOREIGN KEY( noRegistro ) REFERENCES Registros( numero );
+
+ALTER TABLE Ciclistas ADD CONSTRAINT FK_Ciclistas_ FOREIGN KEY ( idPersona ) REFERENCES Personas ( idMiembro );
+
+/*CICLO 1: Atributos*/
+
+ALTER TABLE Puntos ADD CONSTRAINT CK_Puntos_tipo CHECK( tipo IN ('P','L','H','A','M','V','C') );
+ALTER TABLE Puntos ADD CONSTRAINT CK_Puntos_tiempoLimite CHECK( tiempoLimite >= 0);
+
+ALTER TABLE Segmentos ADD CONSTRAINT CK_Segmentos_tipo CHECK( tipo IN ('C','M','L'));
+
+ALTER TABLE Registros ADD CONSTRAINT CK_Registros_numero CHECK( numero BETWEEN 1 AND 99999 );
+ALTER TABLE Registros ADD CONSTRAINT CK_Registros_tiempo CHECK( tiempo >= 0 );
+ALTER TABLE Registros ADD CONSTRAINT CK_Registros_dificultad CHECK( dificultad IN ('A','M','B' ));
+ALTER TABLE Fotos  ADD CONSTRAINT CK_Fotos_foto CHECK(  REGEXP_LIKE( foto, 'www.[A-Za-z]*.pdf')  OR REGEXP_LIKE( foto, 'www.[A-Za-z]*.gif') );
+
+
+ALTER TABLE Ciclistas ADD CONSTRAINT CK_Ciclistas_categoria CHECK( categoria BETWEEN 1 AND 5 );
+
+ALTER TABLE Carreras ADD CONSTRAINT CK_Carreras_codigo CHECK( codigo = UPPER( codigo ) AND  REGEXP_LIKE( codigo, '^[A-Za-z0-9]*$'));
+ALTER TABLE Carreras ADD CONSTRAINT CK_Carreras_pais CHECK( pais = UPPER( pais ) );
+ALTER TABLE Carreras ADD CONSTRAINT CK_Carreras_categoria CHECK( categoria BETWEEN 1 AND 5 );
+ALTER TABLE Carreras ADD CONSTRAINT CK_Carreras_periodicidad CHECK( LOWER(periodicidad) IN ('anual','semestral','mensual') );
+
+ALTER TABLE Versiones  ADD CONSTRAINT CK_Versiones_coVersion  CHECK(  REGEXP_LIKE( coVersion ,'^[A-Za-z0-9]*$'))  ;
+
+
+INSERT INTO Personas VALUES (12345,  'Ivan Camilo');
+INSERT INTO Personas VALUES (23281,  'Kiley Ciottoi');
+INSERT  INTO Personas   VALUES( 12348,'Tin Tin' );
+INSERT  INTO Personas   VALUES( 13246,'Tovar' );
+
+INSERT  INTO Ciclistas   VALUES( 12345,TO_DATE('9/05/2001','MM/DD/YYYY'),4);
+INSERT  INTO Ciclistas   VALUES( 12348,TO_DATE('9/05/1980','MM/DD/YYYY'),4);
+INSERT  INTO Ciclistas   VALUES( 13246,TO_DATE('2/05/1980','MM/DD/YYYY'),4);
+INSERT INTO Ciclistas VALUES ( 23281,TO_DATE('08/30/2020','MM/DD/YYYY'), 3);
+
+INSERT INTO Carreras VALUES ('COLAS','LaRutaSabana','COLOMBIA', 5,'ANUAL');
+INSERT INTO Carreras VALUES ('BRBA','Bike Adventure ','BRAZIL',5,'ANUAL');
+
+INSERT INTO Versiones VALUES('19BRZ','V19Br',TO_DATE('04/21/2019','MM/DD/YYYY'),'BRBA');
+INSERT INTO Versiones VALUES( '19COL','ed18C',TO_DATE('05/04/2019','MM/DD/YYYY'), 'COLAS' );
+INSERT INTO Versiones VALUES( '18COL','ed19C',TO_DATE('05/04/2018','MM/DD/YYYY'), 'COLAS' );
+
+INSERT INTO Puntos VALUES( 01, 18,'P-Herrera', 'M', 20.52, 50, 'COLAS');
+INSERT INTO Puntos VALUES( 02, 30,'P-Lopez', 'H', 40.52, 50, 'COLAS');
+INSERT INTO Puntos VALUES( 03, 45,'P-Bolivar', 'A', 62.52, 50, 'COLAS');
+INSERT INTO Puntos VALUES( 04, 70,'P-Cordoba', 'L', 80.52, 50, 'COLAS');
+INSERT INTO  Puntos VALUES  (06, 84,'Wild Oat', 'M', 32.88, 60,'BRBA');
+INSERT INTO  Puntos VALUES  (08,58,'Hydrochlor', 'C', 78.89, 120,'BRBA');
+
+INSERT INTO Segmentos VALUES('Sisga', 'C','19COL',01,02 ) ;
+INSERT INTO Segmentos VALUES('LaCuchilla', 'C','18COL',03,04 ) ;
+INSERT INTO Segmentos VALUES( 'RutaMont','M','19BRZ',08,06);
+
+INSERT INTO Registros VALUES( 01, 'carrera muy exigente', TO_DATE('05/05/2019','MM/DD/YYYY'), 50, 1,
+
+'<?xml version="1.0"?>
+<Revison>
+   <Secciones>
+       <Sduras
+              kilometroInicial = "4" 
+              velocidadPromedio = "45"
+              velocidadMaxima = "80"
+              pulsacionesPromedio = "120"
+              potenciaPromedio = "58"
+               ></Sduras>
+ 
+       <Sfaciles
+        
+              kilometroInicial = "60"
+              velocidadPromedio = "78"
+              velocidadMaxima = "58"
+              pulsacionesPromedio = "65"
+              potenciaPromedio = "45"
+                 ></Sfaciles>
+       <Sdescenso
+              kilometroInicial = "85"
+              velocidadPromedio = "40"
+              velocidadMaxima = "80"
+              pulsacionesPromedio = "65"
+              potenciaPromedio = "50"
+                  ></Sdescenso>
+  </Secciones>
+</Revison>' ,'A','Sisga',12348 ) ;
+
+INSERT INTO Registros VALUES( 02, 'carrera recomendada', TO_DATE('10/05/2018','MM/DD/YYYY'), 60, 2,
+'<?xml version="1.0"?>
+<Revison>
+   <Secciones>
+       <Sduras
+              kilometroInicial = "7" 
+              velocidadPromedio = "60"
+              velocidadMaxima = "90"
+              pulsacionesPromedio = "130"
+              potenciaPromedio = "59"
+               ></Sduras>
+ 
+       <Sfaciles
+        
+              kilometroInicial = "20"
+              velocidadPromedio = "50"
+              velocidadMaxima = "80"
+              pulsacionesPromedio = "25"
+              potenciaPromedio = "55"
+                 ></Sfaciles>
+       <Sdescenso
+              kilometroInicial = "85"
+              velocidadPromedio = "70"
+              velocidadMaxima = "100"
+              pulsacionesPromedio = "65"
+              potenciaPromedio = "50"
+                  ></Sdescenso>
+  </Secciones>
+</Revison>','A','LaCuchilla',13246 ) ;
+
+INSERT INTO Registros VALUES(03,'Gran Carrera',TO_DATE('05/26/2019','MM/DD/YYYY'),120,5,
+'<?xml version="1.0"?>
+<Revison>
+   <Secciones>
+       <Sduras
+              kilometroInicial = "5" 
+              velocidadPromedio = "25"
+              velocidadMaxima = "90"
+              pulsacionesPromedio = "122"
+              potenciaPromedio = "58"
+               ></Sduras>
+ 
+       <Sfaciles
+        
+              kilometroInicial = "40"
+              velocidadPromedio = "78"
+              velocidadMaxima = "58"
+              pulsacionesPromedio = "65"
+              potenciaPromedio = "45"
+                 ></Sfaciles>
+       <Sdescenso
+              kilometroInicial = "85"
+              velocidadPromedio = "30"
+              velocidadMaxima = "80"
+              pulsacionesPromedio = "65"
+              potenciaPromedio = "54"
+                  ></Sdescenso>
+  </Secciones>
+</Revison>','A','RutaMont',23281);
+
+
+INSERT INTO Registros VALUES(04,'Carrera Fantasticaa',TO_DATE('11/14/2019','MM/DD/YYYY'),50,1,
+'<?xml version="1.0"?>
+<Revison>
+   <Secciones>
+       <Sduras
+              kilometroInicial = "7" 
+              velocidadPromedio = "20"
+              velocidadMaxima = "40"
+              pulsacionesPromedio = "170"
+              potenciaPromedio = "68"
+               ></Sduras>
+ 
+       <Sfaciles
+        
+              kilometroInicial = "85"
+              velocidadPromedio = "50"
+              velocidadMaxima = "80"
+              pulsacionesPromedio = "122"
+              potenciaPromedio = "45"
+                 ></Sfaciles>
+       <Sdescenso
+              kilometroInicial = "100"
+              velocidadPromedio = "65"
+              velocidadMaxima = "101"
+              pulsacionesPromedio = "120"
+              potenciaPromedio = "54"
+                  ></Sdescenso>
+  </Secciones>
+</Revison>','A','Sisga',12345);
+
+INSERT INTO Fotos VALUES (1,'www.fotopprimerorredor.gif',01);
+INSERT INTO Fotos VALUES (2,'www.fotossegundocorredor.gif',02);
+
+/*Consulta
+3)*/
+
+CREATE VIEW RTA AS
+SELECT 
+   nomSegmento AS nomS,
+   COUNT( numero ) AS Apariciones , 
+   MIN(EXTRACTVALUE(Revision,'//Secciones/Sdescenso/@velocidadMaxima')) AS VelocidadMax
+FROM Registros
+GROUP BY nomSegmento;
+
+SELECT 
+    nomV AS nombreVersion,
+    nombre AS nombreSegmento,
+	Apariciones,
+	VelocidadMax
+	
+FROM 
+    RTA 
+	INNER JOIN 
+	Segmentos 
+	 ON nombre = nomS
+	INNER JOIN 
+	(SELECT nombre AS nomV,coVersion AS cVersion FROM Versiones) V
+	 ON coVersion = cVersion
+ORDER BY VelocidadMax;
+/*4)
+NEW-DTD */
+<?xml version="1.0"?>
+<!DOCTYPE Revison [
+  <!ELEMENT Revison ( Secciones?,Clima, Equipo)>
+  <!ELEMENT Secciones ( Sduras*, Sfaciles*, Sdescenso* )>
+  
+  <!ELEMENT Sduras EMPTY>
+  <!ATTLIST Sduras
+                  kilometroInicial CDATA #REQUIRED
+				  kilometrofinal CDATA #REQUIRED
+				  velocidadPromedio CDATA #REQUIRED
+				  velocidadMinima CDATA #REQUIRED
+				  velocidadMaxima CDATA #REQUIRED
+				  pulsacionesPromedio CDATA #REQUIRED
+				  potenciaPromedio CDATA #REQUIRED>
+  <!ELEMENT Sfaciles EMPTY>
+  <!ATTLIST Sfaciles
+                  kilometroInicial CDATA #REQUIRED
+				  kilometrofinal CDATA #REQUIRED
+				  velocidadPromedio CDATA #REQUIRED
+				  velocidadMinima CDATA #REQUIRED
+				  velocidadMaxima CDATA #REQUIRED
+				  pulsacionesPromedio CDATA #REQUIRED
+				  potenciaPromedio CDATA #REQUIRED>
+				  
+  <!ELEMENT Sdescenso EMPTY>			  
+  <!ATTLIST Sdescenso
+                  kilometroInicial CDATA #REQUIRED
+				  kilometrofinal CDATA #REQUIRED
+				  velocidadPromedio CDATA #REQUIRED
+				  velocidadMinima CDATA #REQUIRED
+				  velocidadMaxima CDATA #REQUIRED
+				  pulsacionesPromedio CDATA #REQUIRED
+				  potenciaPromedio CDATA #REQUIRED>
+  <!ELEMENT Clima EMPTY>
+  <!ATTLIST Clima 
+                 temperaturaPromedio CDATA #REQUIRED
+				 sensacionTermica CDATA #REQUIRED
+				 tipo CDATA #REQUIRED>
+  <!ELEMENT Equipo (descripcion)>
+  <!ELEMENT  descripcion (#PCDATA)>
+  <!ATTLIST Equipo 
+                  nombre  CDATA #REQUIRED 
+                  fechaDeFundacion  CDATA #REQUIRED>
+  <!ELEMENT Fotos ( Foto* )>
+  <!ELEMENT Foto (#PCDATA)>
+ 
+  ]>
+DELETE 
+ FROM Registros
+WHERE numero = 03;
+
+
+INSERT INTO Registros VALUES(03,'Gran Carrera',TO_DATE('11/13/2019','MM/DD/YYYY'),120,5,
+'<Revison>
+   <Secciones>
+       <Sduras
+              kilometroInicial = "5" 
+              velocidadPromedio = "25"
+              velocidadMaxima = "90"
+              pulsacionesPromedio = "122"
+              potenciaPromedio = "58"
+               ></Sduras>
+ 
+       <Sfaciles
+        
+              kilometroInicial = "40"
+              velocidadPromedio = "78"
+              velocidadMaxima = "58"
+              pulsacionesPromedio = "65"
+              potenciaPromedio = "45"
+                 ></Sfaciles>
+       <Sdescenso
+              kilometroInicial = "85"
+              velocidadPromedio = "30"
+              velocidadMaxima = "80"
+              pulsacionesPromedio = "65"
+              potenciaPromedio = "54"
+                  ></Sdescenso>
+  </Secciones>
+  <Clima
+        temperaturaPromedio = "30"
+        sensacionTermica = "5"
+        tipo ="Soleado"></Clima>
+  <Equipo
+          nombre ="Team Distrital"
+          fechaDeFundacion="05/05/1999">
+  <descripcion>enfocada en buscar futuros talentos colombianos</descripcion>
+  </Equipo>
+</Revison>','A','RutaMont',23281);
+
+/*5) mostrar el nombre, fecha de la carrera,clima de la carrera que se registro en el ultimo mes del año, el cual tenia un clima soleado.
+
+*/
+
+SELECT 
+    nomC,
+    fecha,
+    EXTRACTVALUE(Revision,'//Clima[@tipo = "Soleado"]/@tipo') AS clima
+    
+FROM Registros  R
+     INNER JOIN 
+     Segmentos  S
+      ON R.nomSegmento = s.nombre
+     INNER JOIN 
+     (SELECT coVersion AS codigoV, coCarrera FROM Versiones ) V
+      ON codigoV = coVersion
+     INNER JOIN 
+     (SELECT codigo, nombre AS  nomC FROM Carreras)
+      ON coCarrera = codigo
+     
+WHERE 
+    EXTRACTVALUE(Revision,'//Clima[@tipo = "Soleado"]/@tipo') IS NOT NULL AND
+    TO_CHAR(fecha,'MM/YYYY') = TO_CHAR(SYSDATE,'MM/YYYY') ;

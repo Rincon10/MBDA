@@ -1,0 +1,588 @@
+/* Laboratorio 05 
+
+
+
+A. Explorando*/
+/*1
+*/
+
+/*2
+*/
+
+
+
+B. Consultas iniciales
+
+Punto 1)¿De cuáles departamentos se tiene información?
+[a. Nombre con etiqueta] [b. Nombre sin etiqueta] [c. Código] 
+
+1.a)
+//Department/Title
+
+1.b)
+//Department/Title/text()
+
+1.c)
+//Department/@Code
+
+Punto 2)¿Cuál es la información del curso Introduction to Databases?
+[a. Toda la información] [b. Todos los atributos] [c. Todas las etiquetas]
+
+2.a)
+//Course[Title/text() = "Introduction to Databases"]
+
+
+2.b)
+//Course[Title/text() = "Introduction to Databases"]/@*
+
+
+2.c)
+//Course[Title/text() = "Introduction to Databases"]/*
+
+Punto 3)¿Cuántos cursos están detallados?
+count(//Course[Description]/Title/text())
+
+¿Cuáles son? [Nombre]
+//Course[Description]/Title/text()
+
+
+
+4)¿Cuál es el total de inscripciones de los cursos? 
+sum(//Course/@Enrollment)
+
+5)¿De cuáles cursos no se conoce el número de inscritos? [Nombre]
+//Course[not(@Enrollment)]/Title/text()
+
+
+6)¿Cuáles cursos son iniciales (no tienen prerrequisitos)? [Nombre]
+//Course[not(Prerequisites)]/Title/text()
+
+7)¿Cuáles cursos son finales (no son prerrequisitos de ninguno)? [Nombre]
+//Course[not(//Course/Prerequisites/Prereq/text() = @Number)]/Title/text()
+
+8)¿Cuáles cursos tienen como instructores al director de su departamento? [Nombre]
+(Los profesores se pueden identificar por su apellido) 
+
+//Department/Course[//Chair/Professor/Last_Name/text() = Instructors/Professor/Last_Name/text()]/Title/text()
+
+9)¿Cuáles cursos de un departamento tienen el mismo profesor? [Nombre]
+(Los profesores se pueden identificar por su apellido) 
+
+//Department/Course[Instructors/Professor/Last_Name/text() = parent::*/Course/Instructors/Professor/Last_Name/text() and @Number != parent::*/Course/@Number]/Title/text()
+
+
+10) ¿Cuáles directores de departamento no colaboran en cursos?[Toda la información]
+(Los profesores se pueden identificar por su apellido) 
+
+//Department/Chair[not(Professor/Last_Name/text() = parent::*/Course/Instructors/Professor/Last_Name/text()) ]/Professor
+
+
+B. Consultas quiz Standford
+
+1. Return all Title elements (of both departments and courses).  (16)
+
+//Title
+
+2. Return last names of all department chairs. (3)
+//Chair/Professor/Last_Name/text()
+
+3. Return titles of courses with enrollment greater than 500. (2)
+
+//Course[@Enrollment > 500]
+
+4. Return titles of departments that have some course that takes "CS106B" as a prerequisite. (2)
+//Department[Course/Prerequisites/Prereq = "CS106B"]/Title/text()
+
+5. Return last names of all professors or lecturers who use a middle initial. Don't worry about eliminating
+duplicates. (5)
+//(Professor|Lecturer)[Middle_Initial]
+
+6. Return the title of courses that have a cross-listed course (i.e., that have "Cross-listed" in their
+description). (2)
+//Course[contains(Description/text() ,"Cross-listed")]/Title/text()
+
+7. Return the enrollment of all courses in the CS department. (10)
+//Department[@Code= "CS" ]/Course /@Enrollment
+
+8. Return last names of instructors teaching at least one course that has "system" in its description and
+enrollment greater than 100. (2)
+//Course[contains(Description/text(),"system") and (@Enrollment> 100) ]/Instructors/(Professor|Lecturer)/Last_Name/text()
+
+9. Return the title of the course with more than 2 instructors (*)(1)
+//Department/Course[count(Instructors/*)>2]/Title/text()
+
+10. Return course numbers of courses that have the same title as some other course. (Hint: You might want to
+use the "preceding" and "following" navigation axes for this query, which were not covered in the video or
+our demo script; they match any preceding or following node, not just siblings.) (2)
+//Course[Title/text() = following::*/Title/text() or Title/text() = preceding::*/Title/text()]/@Number
+
+11. Return the courses numbers of courses that have no lecturers as instructors. (*)(10)
+//Department/Course[Instructors[not(Lecturer)]]/@Number
+
+12. Return titles of courses taught by the chair of a department. For this question, you may assume that all
+professors have distinct last names. (1)
+/*Revisar*/
+
+13. Return titles of courses taught by a professor with the last name "Ng" and by a professor with the last
+name "Thrun". (*)(1)
+//Course[Instructors/Professor[Last_Name/text() = "Ng"] and Instructors/Professor[Last_Name/text() = "Thrun"] ]/Title/text()
+
+14. Return course numbers of courses that have a course taught by Eric Roberts as a prerequisite. (4)
+//Course[Instructors/Professor[First_Name/text() ="Eric" and Last_Name/text()="Roberts"]]/@Number
+/*Revisar*/
+
+15. Return last names of instructors teachiing at least one course that has system in its description and
+enrollment greater than 100.(2)
+//Course[contains(Description/text(),"system") and (@Enrollment> 100) ]/Instructors/(Professor|Lecturer)/Last_Name/text()
+
+C. Consultas propias
+1) consultar el numero total de todos los matriculados en el departamento "CS"
+sum(//Department[@Code = "CS"]/Course/@Enrollment)
+
+2) mostrar todos los cursos del departamento "CS"  
+//Department[@Code = "CS"]/Course/Title/text()
+
+3)mostrar los cursos que tienen como prerrequisito la materia "Introduction to Probability for Computer Scientists"
+//Department/Course[//Course[contains(Title/text(),"Introduction to Probability for Computer Scientists")]/@Number =Prerequisites/Prereq/text()]/@Number
+
+4)mostrar los nombres de profesores o instructores que tengan por apellido "Roberts" (con repeticion )
+//(Professor|Instructors)[Last_Name/text() = "Roberts"]/First_Name/text()
+
+5) contar cuantos conferenciantes hay en el departamento "CS"
+count(//Department[@Code = "CS"]/Course/Instructors/Lecturer)
+
+D. Esquema
+DTD
+
+<?xml version="1.0"?>
+<!DOCTYPE Course_Catalog [
+  <!ELEMENT Course_Catalog (Department+)>
+	<!ELEMENT Department (Title,Chair,Course+)>
+  <!ATTLIST Department Code ID #REQUIRED>
+	<!ELEMENT Chair (Professor)>
+  <!ATTLIST Course 
+	                 Number ID #REQUIRED
+                   Enrollment CDATA #IMPLIED >
+	<!ELEMENT Course (Title,Description,Instructors,Prerequisites?)>
+
+	<!ELEMENT Instructors (Professor|Lecturer)+>
+
+    <!ELEMENT Professor (First_Name,Middle_Initial?,Last_Name)>
+	<!ELEMENT Lecturer (First_Name,Middle_Initial?,Last_Name)>
+
+	<!ELEMENT Prerequisites (Prereq+)>
+	<!ELEMENT Prereq (#PCDATA)>
+	<!ELEMENT Title (#PCDATA)>
+	<!ELEMENT Description (#PCDATA)>
+	<!ELEMENT First_Name (#PCDATA)>
+	<!ELEMENT Middle_Initial (#PCDATA)>
+	<!ELEMENT Last_Name (#PCDATA)>
+		
+]>
+
+E. Nuevos datos
+1)
+<Course_Catalog>
+<Department Code="DM">
+<Title>Departamento Matemáticas </Title>
+<Chair>
+<Professor>
+<First_Name>Edgar </First_Name>
+<Last_Name>Garnica</Last_Name>
+</Professor>
+</Chair>
+<Course Number="MATD">
+<Title>Matematicas Discretas</Title>
+<Description>Logica de segundo orden</Description>
+<Instructors>
+<Professor>
+<First_Name>MATEO</First_Name>
+<Last_Name>SANABRIA </Last_Name>
+</Professor>
+</Instructors>
+</Course>
+<Course Number="AYED">
+<Title>Algoritmos y Estructuras de Datos</Title>
+<Description>Diseñado Para la optimizacion de la base de datos</Description>
+<Instructors>
+<Professor>
+<First_Name>SEBASTIAN </First_Name>
+<Last_Name>MARTINEZ </Last_Name>
+</Professor>
+<Professor>
+<First_Name>GUILLERMO </First_Name>
+<Last_Name>ALVAREZ </Last_Name>
+</Professor>
+</Instructors>
+<Prerequisites>
+<Prereq>PIMB</Prereq>
+<Prereq>LCAL</Prereq>
+</Prerequisites>
+</Course>
+</Department>
+</Course_Catalog>
+2)
+<Course_Catalog>
+<Department Code="DC">
+<Title>Departamento De Ciencias Naturales</Title>
+<Chair>
+<Professor>
+<First_Name>Jaime  </First_Name>
+<Last_Name>Ceballos</Last_Name>
+</Professor>
+</Chair>
+<Course Number="FIME">
+<Title>Fisica Mecanica y de fluidos</Title>
+<Description>Analisis de la fisica mecanica</Description>
+<Instructors>
+<Professor>
+<First_Name>ANDRES</First_Name>
+<Last_Name>LONDOÑO  </Last_Name>
+</Professor>
+<Professor>
+<First_Name>RAUL </First_Name>
+<Last_Name>FANDIÑO  </Last_Name>
+</Professor>
+<Professor>
+<First_Name>DANIEL  </First_Name>
+<Last_Name>MOLANO  </Last_Name>
+</Professor>
+</Instructors>
+</Course>
+</Department>
+</Course_Catalog>
+3)
+<Course_Catalog>
+<Department Code="HM">
+<Title>Departamento De Humanidades</Title>
+<Chair>
+<Professor>
+<First_Name>José   </First_Name>
+<Last_Name>Vásquez </Last_Name>
+</Professor>
+</Chair>
+<Course Number="FCO1">
+<Title>-Fundamentos de la Comunicación 1 </Title>
+<Description> desarrollar la competencia de la comunicación</Description>
+<Instructors>
+<Professor>
+<First_Name>María </First_Name>
+<Last_Name>Negrete  </Last_Name>
+</Professor>
+<Professor>
+<First_Name>Milena </First_Name>
+<Last_Name>Mejía </Last_Name>
+</Professor>
+<Professor>
+<First_Name>María  </First_Name>
+<Last_Name>Noriega  </Last_Name>
+</Professor>
+</Instructors>
+</Course>
+</Department>
+</Course_Catalog>
+
+
+PUNTO DOS. (XML – Oracle) AfterRide. TRevisión
+1)Proponga la estructura XML necesaria para tener la información de la revisión de un
+  registro. DTD y ejemplos XML OK y XML NoOK. Explique
+
+DTD 
+<?xml version="1.0"?>
+<!DOCTYPE Registros [
+  <!ELEMENT Registros ( Registro*)>
+  <!ELEMENT Registro (Persona,Carrera,Version,Segmentos,Comentario?,Revision?,Fotos?)>
+  <!ATTLIST Registro 
+                    numero CDATA #REQUIRED
+					fecha CDATA #REQUIRED
+					tiempo CDATA #REQUIRED
+					posicion CDATA #REQUIRED
+					dificultad (A|M|B) #REQUIRED>
+  <!ELEMENT Persona ( Ciclista )>
+  <!ATTLIST Persona
+                   id CDATA #REQUIRED
+                   nombres CDATA #REQUIRED>
+  <!ELEMENT Ciclista EMPTY>		
+  <!ATTLIST Ciclista
+                    nacimiento CDATA #REQUIRED
+                    categoria (1|2|3|4|5) #REQUIRED>
+					
+  <!ELEMENT Carrera EMPTY >
+  <!ATTLIST Carrera 
+                   codigo CDATA #REQUIRED
+                   nombre CDATA #REQUIRED
+				   pais CDATA #REQUIRED
+				   categoria (1|2|3|4|5) #REQUIRED
+				   periodicidad (A|S) #REQUIRED>
+  
+  <!ELEMENT Version EMPTY>
+  <!ATTLIST Version
+                   nombre CDATA #REQUIRED
+				   fecha CDATA #REQUIRED>
+                   
+  <!ELEMENT Segmentos ( Segmento )>
+  <!ELEMENT Segmento ( Puntos )>
+  <!ATTLIST Segmento
+                    nombre CDATA #REQUIRED
+					tipo (C|M|L) #REQUIRED>
+  <!ELEMENT Puntos ( Puntoini, PuntoFin )>
+  <!ELEMENT Puntoini EMPTY >
+  <!ATTLIST Puntoini
+                    nombre CDATA #REQUIRED
+                    orden CDATA #REQUIRED
+					tipo (P|L|H|A|M|V|C) #REQUIRED
+					distancia CDATA #REQUIRED
+					tiempoLimite CDATA #REQUIRED>
+					
+  <!ELEMENT PuntoFin EMPTY >
+  <!ATTLIST PuntoFin
+                    nombre CDATA #REQUIRED
+                    orden CDATA #REQUIRED
+					tipo (P|L|H|A|M|V|C) #REQUIRED
+					distancia CDATA #REQUIRED
+					tiempoLimite CDATA #REQUIRED>
+  <!ELEMENT Comentario (#PCDATA)>
+  <!ELEMENT Revision ( Secciones )>
+  <!ELEMENT Secciones ( Sduras+, Sfaciles+, Sdescenso+ )>
+  
+  <!ELEMENT Sduras EMPTY>
+  <!ATTLIST Sduras
+                  kilometroInicial CDATA #REQUIRED
+				  kilometrofinal CDATA #REQUIRED
+				  velocidadPromedio CDATA #REQUIRED
+				  velocidadMinima CDATA #REQUIRED
+				  velocidadMaxima CDATA #REQUIRED
+				  pulsacionesPromedio CDATA #REQUIRED
+				  potenciaPromedio CDATA #REQUIRED>
+  <!ELEMENT Sfaciles EMPTY>
+  <!ATTLIST Sfaciles
+                  kilometroInicial CDATA #REQUIRED
+				  kilometrofinal CDATA #REQUIRED
+				  velocidadPromedio CDATA #REQUIRED
+				  velocidadMinima CDATA #REQUIRED
+				  velocidadMaxima CDATA #REQUIRED
+				  pulsacionesPromedio CDATA #REQUIRED
+				  potenciaPromedio CDATA #REQUIRED>
+				  
+  <!ELEMENT Sdescenso EMPTY>			  
+  <!ATTLIST Sdescenso
+                  kilometroInicial CDATA #REQUIRED
+				  kilometrofinal CDATA #REQUIRED
+				  velocidadPromedio CDATA #REQUIRED
+				  velocidadMinima CDATA #REQUIRED
+				  velocidadMaxima CDATA #REQUIRED
+				  pulsacionesPromedio CDATA #REQUIRED
+				  potenciaPromedio CDATA #REQUIRED>
+  <!ELEMENT Fotos ( Foto* )>
+  <!ELEMENT Foto (#PCDATA)>
+ 
+  ]>
+XML OK
+<Registros>
+  <Registro 
+           numero = "01"
+           fecha = "05/05/2020"
+           tiempo = "120"
+           posicion = "5"
+           dificultad = "A">
+   <Persona 
+           id = "12314"
+           nombres = "Rick"
+            >
+      <Ciclista 
+               nacimiento = "10/10/2001"
+               categoria = "2"></Ciclista>
+   </Persona>
+   <Carrera
+           codigo = "LA100"
+           nombre ="Los Alpes"
+           pais ="Colombia"
+           categoria ="2"
+           periodicidad ="A"
+            ></Carrera>
+   <Version
+     			nombre ="LA-14"
+     			fecha ="25/05/2014"></Version>
+   <Segmentos>
+      <Segmento
+       			nombre = "AltoMontaña"
+      			tipo ="M">
+       <Puntos>
+          <Puntoini
+                    nombre = "Esmeralda"
+                    orden = "3"
+                    tipo = "H"
+                    distancia = "20"
+                    tiempoLimite = "20"
+                    ></Puntoini>
+          <PuntoFin
+                    nombre = "Oro"
+                    orden = "160"
+                    tipo = "L"
+                    distancia = "120"
+                    tiempoLimite = "120"
+                    ></PuntoFin>      
+       </Puntos>
+     </Segmento>
+   </Segmentos>
+     <Comentario>"You are Amazing"</Comentario>
+  </Registro>
+</Registros>
+
+
+XML NoOK.
+
+Salta error ya que el tipo  de segmento "MM" no es valido segun lo especificado por  y
+debe seguir ir primero la etiqueta  Persona que Carrera.
+
+<Registros>
+  <Registro 
+           numero = "01"
+           fecha = "05/05/2020"
+           tiempo = "120"
+           posicion = "5"
+           dificultad = "A">
+   <Carrera
+           codigo = "LA100"
+           nombre ="Los Alpes"
+           pais ="Colombia"
+           categoria ="2"
+           periodicidad ="A"
+            ></Carrera>
+   <Persona 
+           id = "12314"
+           nombres = "Rick"
+            >
+      <Ciclista 
+               nacimiento = "10/10/2001"
+               categoria = "2"></Ciclista>
+   </Persona>   
+   <Version
+     			nombre ="LA-14"
+     			fecha ="25/05/2014"></Version>
+   <Segmentos>
+      <Segmento
+       			nombre = "AltoMontaña"
+      			tipo ="M">
+       <Puntos>
+          <Puntoini
+                    nombre = "Esmeralda"
+                    orden = "3"
+                    tipo = "H"
+                    distancia = "20"
+                    tiempoLimite = "20"
+                    ></Puntoini>
+          <PuntoFin
+                    nombre = "Oro"
+                    orden = "160"
+                    tipo = "L"
+                    distancia = "120"
+                    tiempoLimite = "120"
+                    ></PuntoFin>      
+       </Puntos>
+     </Segmento>
+   </Segmentos>
+     <Comentario>"You are Amazing"</Comentario>
+  </Registro>
+</Registros>
+
+2)
+
+
+
+PoblandoOK
+
+
+3)
+4)
+5)
+
+
+Base  para XML
+<Registros>
+  <Registro 
+           numero =
+           fecha =
+           tiempo =
+           posicion =
+           dificultad = >
+   <Persona 
+           id =
+           nombres =>
+      <Ciclista
+               nacimiento
+               categoria>
+      </Ciclista>
+   </Persona>
+   <Carrera
+           codigo
+           nombre
+           pais
+           categoria
+           pe1iodicidad>
+   </Carrera>
+   <Version
+     			nombre
+     			fecha>
+   </Version>
+   <Segmentos>
+      <Segmento
+       			nombre
+      			tipo>
+       <Puntos>
+          <Puntoini
+                    nombre
+                    orden
+                    tipo
+                    distancia
+                    tiempoLimite>
+            
+          </Puntoini>
+          <PuntoFin
+                    nombre
+                    orden
+                    tipo
+                    distancia
+                    tiempoLimite>
+          </PuntoFin>      
+       </Puntos>
+     </Segmento>
+   </Segmentos>
+   <Comentario></Comentario>
+   <Revision>
+      <Secciones>
+        <Sduras
+               kilometroInicial
+               kilometrofinal
+               velocidadPromedio
+               velocidadMinima
+               velocidadMaxima
+               pulsacionesPromedio
+               potenciaPromedio>
+        </Sduras>
+        <Sfaciles
+               kilometroInicial =
+               kilometrofinal =
+               velocidadPromedio =
+               velocidadMinima =
+               velocidadMaxima =
+               pulsacionesPromedio =
+               potenciaPromedio = >
+        </Sfaciles>
+        <Sdescenso
+               kilometroInicial =
+               kilometrofinal =
+               velocidadPromedio =
+               velocidadMinima =
+               velocidadMaxima = 
+               pulsacionesPromedio 
+               potenciaPromedio>
+        </Sdescenso>
+      </Secciones>
+   </Revision>
+   <Fotos>
+        <Foto>
+        </Foto>
+   </Fotos>
+  </Registro>
+</Registros>

@@ -1,0 +1,7 @@
+DROP PACKAGE PC_Musico;
+DROP PACKAGE PC_Composicion;
+
+
+DROP PACKAGE PA_Musico ;
+DROP PACKAGE PA_Administrador;
+DROP PACKAGE PA_Compositor;

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE Preferencias[
+    <!ELEMENT Preferencias ( Productos, artistas, horarios)>
+	<!ELEMENT Productos ( Producto*)>
+    <!ATTLIST  Producto
+        codigo CDATA #REQUIRED>
+    <!ELEMENT Producto ( Descripcion ) >
+    <!ELEMENT artistas ( artista*)>
+    <!ATTLIST artista
+        id CDATA #REQUIRED>
+        
+    <!ELEMENT artista ( nombre, nArtistico)>
+    <!ELEMENT horarios ( horario* )>
+    
+    
+    <!ELEMENT horario (#PCDATA) >
+    <!ELEMENT nombre (#PCDATA) >
+    <!ELEMENT nArtistico (#PCDATA) >
+    <!ELEMENT Descripcion (#PCDATA) >
+    
+	
+]>
+<Preferencias>
+    <Productos>
+        <Producto
+            codigo = "3979129">
+            <Descripcion> Una rica chocolatina de sabor baja en calorias </Descripcion>
+        </Producto>
+        <Producto
+            codigo = "3780348">
+            <Descripcion> Un rico Trago de 18 años</Descripcion>
+        </Producto>
+    </Productos>
+    <artistas>
+        <artista
+            id = "6992855">
+            <nombre>José Álvaro Osorio Balvin</nombre>
+            <nArtistico> Jbalvin </nArtistico>
+        </artista>
+        <artista
+            id = "6472757">
+            <nombre>Greeicy Yeliana Rendon</nombre>
+            <nArtistico> Greeicy Rendon </nArtistico>
+        </artista>
+    </artistas>
+    <horarios>
+        <horario> 2:00PM - 4:00PM</horario>
+    </horarios>
+</Preferencias>

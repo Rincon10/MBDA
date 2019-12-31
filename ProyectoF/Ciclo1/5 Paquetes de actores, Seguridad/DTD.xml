@@ -1,0 +1,94 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE Detalle[
+    <!ELEMENT Detalle ( Estudios, Referencias, Aptitudes )>
+	<!ELEMENT Estudios (Bachillerato, Universidades*, Logros*)> 
+	<!ELEMENT Bachillerato ( Colegio )>
+	<!ATTLIST Colegio 
+	    nombre CDATA #REQUIRED
+      añoFin CDATA #REQUIRED>
+		
+	<!ELEMENT Colegio EMPTY>
+	
+	<!ELEMENT Universidades ( Universidad* )>
+    <!ATTLIST Universidad
+	    nombre CDATA #REQUIRED
+		semestre CDATA #REQUIRED>
+		
+	<!ELEMENT Universidad ( añoFin? )>
+	<!ELEMENT Logros ( Logro* )>
+	
+	<!ELEMENT Referencias (Laborales+,Personales+)>
+
+	<!ATTLIST Laborales
+        nombrePer CDATA #REQUIRED
+	    telefono CDATA #REQUIRED
+		>
+	
+	<!ATTLIST Personales
+        nombrePer CDATA #REQUIRED
+	    telefono CDATA #REQUIRED
+		>
+  
+	<!ELEMENT Aptitudes (Fortalezas, Debilidades)>
+	
+	<!ELEMENT Fortalezas (Fortaleza+)>
+  <!ELEMENT Debilidades (Debilidad+)>
+	
+	<!ELEMENT Fortaleza (#PCDATA)>	
+	<!ELEMENT Debilidad (#PCDATA)>	
+	<!ELEMENT añoFin (#PCDATA)>		
+	<!ELEMENT Logro (#PCDATA)>
+	<!ELEMENT Laborales (#PCDATA)>
+	<!ELEMENT Personales (#PCDATA)>	
+]>
+<Detalle>
+    <Estudios>
+        <Bachillerato>
+            <Colegio
+                nombre = "Liceo Segovia"
+                añoFin = "2015"></Colegio>
+        </Bachillerato>
+        <Universidades>
+            <Universidad
+                nombre = "Escuela de ingenieros"
+                semestre = "10"
+            >
+            <añoFin>"2019"</añoFin>
+            </Universidad>
+            <Universidad
+                nombre = "Los andes"
+                semestre = "10"
+            >
+            <añoFin>"2019"</añoFin>
+            </Universidad>
+        </Universidades>
+    </Estudios>
+    <Referencias>
+        
+        <Laborales
+            nombrePer = "Ivan Camilo"
+            telefono = "31423139501">
+        "Es capaz de tomar decisiones de forma autonoma"
+        </Laborales>
+        
+        <Personales
+            nombrePer = "Fabio Ramirez"
+            telefono = "3213238959">
+        "Es un joven muy comprometido con lo que hace."
+        </Personales>
+        
+    </Referencias>
+    <Aptitudes>
+        <Fortalezas>
+            <Fortaleza>
+                "Perseverante"
+            </Fortaleza>
+        </Fortalezas>
+        
+        <Debilidades>
+            <Debilidad>
+                "Impulsivo"
+            </Debilidad>
+        </Debilidades>
+    </Aptitudes>
+</Detalle>
