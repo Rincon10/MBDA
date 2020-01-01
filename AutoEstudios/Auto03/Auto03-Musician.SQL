@@ -37,7 +37,7 @@ CREATE TABLE place( place_no NUMBER( 11 ) NOT NULL ,
 CREATE TABLE plays_in( player NUMBER( 11 ) NOT NULL, band_id NUMBER( 11 ) NOT NULL );
 
 
--------------------------------Adicionar las restricciones a la base de datos (Atributos, Primarias, Únicas, Foraneas )-------------------------------
+-------------------------------Adicionar las restricciones a la base de datos (Atributos, Primarias, Ãšnicas, Foraneas )-------------------------------
 
 ------------------------------Claves primarias para todas las tablas ------------------------------
 
@@ -97,7 +97,7 @@ ALTER TABLE performance_ ADD CONSTRAINT FKperformMconducted_by FOREIGN KEY( cond
 ALTER TABLE performance_ ADD CONSTRAINT FKperformConc_performed_in FOREIGN KEY( performed_in ) REFERENCES concert  ( concert_no );
 ALTER TABLE performance_ ADD CONSTRAINT FKperformBgave FOREIGN KEY( gave ) REFERENCES band  ( band_no );
 
--------------------------------PoblarOK ( Adicionar información a la tabla )-------------------------------
+-------------------------------PoblarOK ( Adicionar informaciÃ³n a la tabla )-------------------------------
 
 ---Se crearon plantillas para hacer el poblado de las tablas
 
@@ -359,7 +359,8 @@ INSERT INTO concert VALUES(8,'Metropolitan',4,TO_DATE('1997/06/15 ','YYYY/MM/DD'
 
 /*
 SELECT 
-    CONCAT('INSERT INTO performance VALUES(',pfrmnc_no,',',gave,',',performed,',',conducted_by,',',performed_in,');') FROM performance;
+    CONCAT('INSERT INTO performance VALUES(',pfrmnc_no,',',gave,',',performed,',',conducted_by,',',performed_in,');') 
+FROM performance;
 */
 
 INSERT INTO performance_ VALUES(1,1,1,21,1);
@@ -385,9 +386,9 @@ INSERT INTO performance_ VALUES(20,4,12,10,3);
 
 
 
--------------------------------PoblarOK (Adicionar información a la tabla )-------------------------------
+-------------------------------PoblarOK (Adicionar informaciÃ³n a la tabla )-------------------------------
 
-----------------------------------------Adicionar información a la tabla-------------------------------
+----------------------------------------Adicionar informaciÃ³n a la tabla-------------------------------
 
 INSERT INTO place VALUES(10,'Bogota','Colombia');
 
