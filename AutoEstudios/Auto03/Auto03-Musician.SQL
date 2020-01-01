@@ -98,11 +98,18 @@ ALTER TABLE performance_ ADD CONSTRAINT FKperformConc_performed_in FOREIGN KEY( 
 ALTER TABLE performance_ ADD CONSTRAINT FKperformBgave FOREIGN KEY( gave ) REFERENCES band  ( band_no );
 
 -------------------------------PoblarOK ( Adicionar información a la tabla )-------------------------------
----Se crearon plantillas para hacer el poblado de las tablas---
+
+---Se crearon plantillas para hacer el poblado de las tablas
 
 ---Poblar la base de datos con los datos iniciales ---
 
 -------------------------------valores place -------------------------------
+/*
+SELECT 
+    'INSERT INTO place VALUES('||place_no||','||place_town||','||place_country||');' 
+FROM place;
+*/
+
 
 INSERT INTO place VALUES(1,'Manchester','England');
 INSERT INTO place VALUES(2,'Edinburgh','Scotland');
@@ -115,6 +122,15 @@ INSERT INTO place VALUES(8,'Chicago','USA');
 INSERT INTO place VALUES(9,'Amsterdam','Netherlands');
 
 -------------------------------valores musician -------------------------------
+
+
+/*
+
+SELECT 
+    CONCAT('INSERT INTO musician VALUES(',m_no,',',m_name,',','TO_DATE(',REPLACE(born,'-','/'),',     yyyy/mm/dd)',',',CASE WHEN died IS NULL THEN 'NULL'  ELSE CONCAT('TO_DATE(',REPLACE(died,'-','/'),', yyyy/mm/dd)') END, ',',born_in,',',living_in,');') 
+FROM musician;
+
+*/
 
 INSERT INTO musician VALUES(1,'Fred Bloggs',TO_DATE('1948/01/02','YYYY/MM/DD'), NULL,1,2);
 INSERT INTO musician VALUES(2,'John Smith',TO_DATE('1950/03/03','YYYY/MM/DD'),NULL,3,4);
@@ -141,6 +157,11 @@ INSERT INTO musician VALUES(22,'Steven Chaytors',TO_DATE('1956/03/11','YYYY/MM/D
 
 -------------------------------valores composer -------------------------------
 
+/*
+SELECT  
+    'INSERT INTO composer VALUES('||comp_no||','||comp_is||','||comp_type||');' 
+FROM composer;
+*/
 INSERT INTO composer VALUES(1,1,'jazz');
 INSERT INTO composer VALUES(2,3,'classical');
 INSERT INTO composer VALUES(3,5,'jazz');
@@ -155,6 +176,12 @@ INSERT INTO composer VALUES(11,10,'rock');
 INSERT INTO composer VALUES(12,8,'jazz');
 
 -------------------------------valores performer -------------------------------
+
+/*
+SELECT 
+    'INSERT INTO performer VALUES('||perf_no||','||perf_is||','||instrument||','||perf_type||');'
+FROM performer;
+*/
 
 INSERT INTO performer VALUES(1,2,'violin','classical');
 INSERT INTO performer VALUES(2,4,'viola','classical');
@@ -188,6 +215,16 @@ INSERT INTO performer VALUES(29,18,'cello','classical');
 
 -------------------------------valores band -------------------------------
 
+/*
+SELECT 
+     CONCAT('INSERT INTO band VALUES(',band_no,',',band_name,',',band_home,',',band_type,',',
+     CASE 
+         WHEN b_date IS NULL THEN 'NULL' 
+         ELSE CONCAT('TO_DATE(',REPLACE(b_date,'-','/'),', yyyy/mm/dd)') 
+     END, ',',band_contact,');') 
+FROM band;
+*/
+
 INSERT INTO band VALUES(1,'ROP',5,'classical',TO_DATE('1930/01/01','YYYY/MM/DD'),11);
 INSERT INTO band VALUES(2,'AASO',6,'classical',NULL,10);
 INSERT INTO band VALUES(3,'The J Bs',8,'jazz',NULL,12);
@@ -199,6 +236,12 @@ INSERT INTO band VALUES(8,'Swinging strings',4,'classical',NULL,7);
 INSERT INTO band VALUES(9,'The Rest',9,'jazz',NULL,16);
 
 -------------------------------valores composition -------------------------------
+
+/*
+SELECT 
+    CONCAT('INSERT INTO composition VALUES(',c_no,',',CASE WHEN comp_date IS NULL THEN 'NULL' ELSE CONCAT('TO_DATE(',REPLACE(comp_date,'-','/'),', "yyyy/mm/dd)"') END, ',',c_title,',',c_in,');') 
+FROM composition;
+*/
 
 INSERT INTO composition VALUES(1,TO_DATE('1975/06/17','YYYY/MM/DD'),'Opus ',1);
 INSERT INTO composition VALUES(2,TO_DATE('1976/07/21','YYYY/MM/DD'),'Here Goes',2);
@@ -223,6 +266,12 @@ INSERT INTO composition VALUES(20,NULL,'Slow Symphony Blowing',2);
 INSERT INTO composition VALUES(21,TO_DATE('1990/07/12','YYYY/MM/DD'),'A Last Song',6);
 
 -------------------------------valores has_composed -------------------------------
+
+/*
+SELECT 
+    CONCAT('INSERT INTO has_composed VALUES(',cmpr_no,',',cmpn_no,');') 
+FROM has_composed;
+*/
 
 INSERT INTO has_composed VALUES(1,1);
 INSERT INTO has_composed VALUES(1,8);
@@ -250,6 +299,12 @@ INSERT INTO has_composed VALUES(12,19);
 
 
 -------------------------------valores plays_in -------------------------------
+
+/*
+SELECT 
+    CONCAT('INSERT INTO plays_in VALUES(',player,',',band_id,');')
+ FROM plays_in;
+*/
 
 INSERT INTO plays_in VALUES(1,1);
 INSERT INTO plays_in VALUES(1,7);
@@ -285,6 +340,13 @@ INSERT INTO plays_in VALUES(29,7);
 
 
 -------------------------------valores concert -------------------------------
+
+/*
+SELECT 
+    CONCAT('INSERT INTO concert VALUES(',concert_no,',',concert_venue,',',concert_in,',','TO_DATE(',REPLACE(con_date,'-','/'),', yyyy/mm/dd)',',',concert_orgniser,');') 
+FROM concert;
+*/
+
 INSERT INTO concert VALUES(1,'Bridgewater Hall',1,TO_DATE('1995/01/06 ','YYYY/MM/DD'),21);
 INSERT INTO concert VALUES(2,'Bridgewater Hall',1,TO_DATE('1996/05/08 ','YYYY/MM/DD'),3);
 INSERT INTO concert VALUES(3,'Usher Hall',2,TO_DATE('1995/06/03','YYYY/MM/DD') ,3);
@@ -295,6 +357,10 @@ INSERT INTO concert VALUES(7,'Concertgebouw',9,TO_DATE('1993/05/14 ','YYYY/MM/DD
 INSERT INTO concert VALUES(8,'Metropolitan',4,TO_DATE('1997/06/15 ','YYYY/MM/DD'),21);
 -------------------------------valores performance_ -------------------------------
 
+/*
+SELECT 
+    CONCAT('INSERT INTO performance VALUES(',pfrmnc_no,',',gave,',',performed,',',conducted_by,',',performed_in,');') FROM performance;
+*/
 
 INSERT INTO performance_ VALUES(1,1,1,21,1);
 INSERT INTO performance_ VALUES(2,1,3,21,1);
