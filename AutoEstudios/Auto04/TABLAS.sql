@@ -9,24 +9,25 @@ CREATE TABLE band (
    band_contact NUMBER( 11 ) NOT NULL
 );
 
-CREATE TABLE 
-   composer( comp_no NUMBER ( 11 ) NOT NULL  , 
-   comp_is NUMBER( 11 ) NOT NULL , comp_type VARCHAR( 15 ) 
+CREATE TABLE composer( 
+   comp_no NUMBER ( 11 ) NOT NULL  , 
+   comp_is NUMBER( 11 ) NOT NULL ,
+   comp_type VARCHAR( 15 ) 
 );
 
-CREATE TABLE 
-   composition( c_no NUMBER ( 11 ) NOT NULL   ,
+CREATE TABLE composition( 
+   c_no NUMBER ( 11 ) NOT NULL   ,
    comp_date DATE ,
    c_title VARCHAR( 40 ) NOT NULL ,
    c_in NUMBER( 11 ) 
 );
 
-CREATE TABLE 
-  concert( concert_no NUMBER( 1 ) NOT NULL  ,
-  concert_venue VARCHAR( 45 ) , 
-  concert_in NUMBER( 1 ) NOT NULL , 
-  con_date DATE , 
-  concert_orgniser NUMBER( 2 )
+CREATE TABLE concert( 
+   concert_no NUMBER( 1 ) NOT NULL  ,
+   concert_venue VARCHAR( 45 ) , 
+   concert_in NUMBER( 1 ) NOT NULL , 
+   con_date DATE , 
+   concert_orgniser NUMBER( 2 )
 );
 
 CREATE TABLE has_composed(
