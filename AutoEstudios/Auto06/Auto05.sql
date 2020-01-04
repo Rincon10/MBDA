@@ -1,6 +1,3 @@
-/*Fabián Mauricio Ramírez Pinto
-Iván Camilo Rincón Saavedra
-*/
 
 
 DROP TABLE musician;
@@ -9,7 +6,7 @@ DROP TABLE musician;
 /* Definiendo y poblando*/	
 
 /*
-1)Modifique la creación de las tablas considerando este nuevo atributo*/
+1)Modifique la creaciÃ³n de las tablas considerando este nuevo atributo*/
 
 CREATE TABLE musician(
     m_no NUMBER( 11 ) NOT NULL ,
@@ -28,7 +25,7 @@ ALTER TABLE musician
 
 
 /*2)
-Modifique las instrucciones para poblar la tabla considerando esta información*/
+Modifique las instrucciones para poblar la tabla considerando esta informaciÃ³n*/
 INSERT INTO musician 
     VALUES (1,'Fred Bloggs',TO_DATE('1948-01-02','YYYY-MM-DD'),NULL, 1,2,
 '<?xml version="1.0"?>
@@ -49,29 +46,29 @@ INSERT INTO musician
 	</sellos>
 	<discos>
 	   <disco
-	       nombre  = "Sinfonía 1"
-	       año = "1799">
+	       nombre  = "SinfonÃ­a 1"
+	       aÃ±o = "1799">
 	   </disco>
 	   <disco
-	       nombre  = "Sinfonía 10"
-	       año = "1810">
+	       nombre  = "SinfonÃ­a 10"
+	       aÃ±o = "1810">
 	   </disco>   
 	</discos>
 	<premios>
 	   <premio
 	      nombre = "World Music"
-          año = "1812">
+          aÃ±o = "1812">
 	   </premio>
        <premio
 	      nombre =  "Heat Latin Music Awards? "
-          año = "1812">
+          aÃ±o = "1812">
 	   </premio>
 	</premios>
     <universidades>
 	   <universidad
 	       nombre = "Jacobs School of Music"
-		   añoInicio = "1770"
-		   añoFin = "1775"
+		   aÃ±oInicio = "1770"
+		   aÃ±oFin = "1775"
 		   titulo = "Musician">
 	   </universidad>
 	</universidades>
@@ -109,25 +106,25 @@ INSERT INTO musician
 	</sellos>
 	<discos>
 	   <disco
-	       nombre  = "Sinfonía 25"
-	       año = "1990">
+	       nombre  = "SinfonÃ­a 25"
+	       aÃ±o = "1990">
 	   </disco>
 	   <disco
-	       nombre  = "Sinfonía 30"
-	       año = "2000">
+	       nombre  = "SinfonÃ­a 30"
+	       aÃ±o = "2000">
 	   </disco>   
 	</discos>
 	<premios>
 	   <premio
 	      nombre = "World Music"
-          año = "1812">
+          aÃ±o = "1812">
 	   </premio>
 	</premios>
     <universidades>
 	   <universidad
 	       nombre = "Yale School of Music"
-		   añoInicio = "1770"
-		   añoFin = "1775"
+		   aÃ±oInicio = "1770"
+		   aÃ±oFin = "1775"
 		   titulo = "Musician">
 	   </universidad>
 	</universidades>
@@ -165,25 +162,25 @@ INSERT INTO musician
 	</sellos>
 	<discos>
 	   <disco
-	       nombre  = "Sinfonía 6"
-	       año = "1885">
+	       nombre  = "SinfonÃ­a 6"
+	       aÃ±o = "1885">
 	   </disco>
 	   <disco
-	       nombre  = "Sinfonía  8"
-	       año = "1900">
+	       nombre  = "SinfonÃ­a  8"
+	       aÃ±o = "1900">
 	   </disco>   
 	</discos>
 	<premios>
 	   <premio
 	      nombre =  "Heat Latin Music Awards? "
-          año = "1930">
+          aÃ±o = "1930">
 	   </premio>
 	</premios>
     <universidades>
 	   <universidad
 	       nombre = "Curtis Institute of Music"
-		   añoInicio = "1860"
-		   añoFin = "1870"
+		   aÃ±oInicio = "1860"
+		   aÃ±oFin = "1870"
 		   titulo = "Musician">
 	   </universidad>
 	</universidades>
@@ -220,24 +217,24 @@ INSERT INTO musician
 	<discos>
 	   <disco
 	       nombre  = "Trilogia"
-	       año = "1950">
+	       aÃ±o = "1950">
 	   </disco>
 	   <disco
 	       nombre  = "Le Diable"
-	       año = "1970">
+	       aÃ±o = "1970">
 	   </disco>   
 	</discos>
 	<premios>
 	   <premio
 	      nombre =  "Grammy Latinos "
-          año = "1980">
+          aÃ±o = "1980">
 	   </premio>
 	</premios>
     <universidades>
 	   <universidad
 	       nombre = "Berklee School of Music"
-		   añoInicio = "1900"
-		   añoFin = "1905"
+		   aÃ±oInicio = "1900"
+		   aÃ±oFin = "1905"
 		   titulo = "Musician">
 	   </universidad>
 	</universidades>
@@ -274,24 +271,24 @@ INSERT INTO musician
 	<discos>
 	   <disco
 	       nombre  = "Conciertos de Brandenburgo"
-	       año = "1721">
+	       aÃ±o = "1721">
 	   </disco>
 	   <disco
 	       nombre  = "Sonata para piano 14"
-	       año = "1770">
+	       aÃ±o = "1770">
 	   </disco>   
 	</discos>
 	<premios>
 	   <premio
 	      nombre = "Premio Grammy "
-          año = "1810">
+          aÃ±o = "1810">
 	   </premio>
 	</premios>
     <universidades>
 	   <universidad
 	       nombre = "Yale School of Music"
-		   añoInicio = "1760"
-		   añoFin = "1765"
+		   aÃ±oInicio = "1760"
+		   aÃ±oFin = "1765"
 		   titulo = "Musician">
 	   </universidad>
 	</universidades>
@@ -332,25 +329,25 @@ INSERT INTO musician
 	</sellos>
 	<discos>
 	   <disco
-	       nombre  = "Sinfonía 5 en Do menor"
-	       año = "1800">
+	       nombre  = "SinfonÃ­a 5 en Do menor"
+	       aÃ±o = "1800">
 	   </disco>
 	   <disco
-	       nombre  = "Sinfonía número 9 Coral en Re menor"
-	       año = "1820">
+	       nombre  = "SinfonÃ­a nÃºmero 9 Coral en Re menor"
+	       aÃ±o = "1820">
 	   </disco>   
 	</discos>
 	<premios>
 	   <premio
 	      nombre =  "MTV Video Music Awards"
-          año = "1850">
+          aÃ±o = "1850">
 	   </premio>
 	</premios>
     <universidades>
 	   <universidad
 	       nombre = "University of Hartford"
-		   añoInicio = "1820"
-		   añoFin = "1825"
+		   aÃ±oInicio = "1820"
+		   aÃ±oFin = "1825"
 		   titulo = "Musician">
 	   </universidad>
 	</universidades>
@@ -389,24 +386,24 @@ INSERT INTO musician
 	<discos>
 	   <disco
 	       nombre  = "Don Carlo"
-	       año = "1980">
+	       aÃ±o = "1980">
 	   </disco>
 	   <disco
 	       nombre  = "Sonatas y Impromptus"
-	       año = "1990">
+	       aÃ±o = "1990">
 	   </disco>   
 	</discos>
 	<premios>
 	   <premio
 	      nombre =  "American Music Awards"
-          año = "2000">
+          aÃ±o = "2000">
 	   </premio>
 	</premios>
     <universidades>
 	   <universidad
 	       nombre = "Yale School of Music"
-		   añoInicio = "1970"
-		   añoFin = "1975"
+		   aÃ±oInicio = "1970"
+		   aÃ±oFin = "1975"
 		   titulo = "Musician">
 	   </universidad>
 	</universidades>
@@ -443,25 +440,25 @@ INSERT INTO musician
 	</sellos>
 	<discos>
 	   <disco
-	       nombre  = "Concierto para Violín en Re mayor"
-	       año = "1878">
+	       nombre  = "Concierto para ViolÃ­n en Re mayor"
+	       aÃ±o = "1878">
 	   </disco>
 	   <disco
-	       nombre  = "Sinfonía 9 del Nuevo Mundo en mi menor"
-	       año = "1885">
+	       nombre  = "SinfonÃ­a 9 del Nuevo Mundo en mi menor"
+	       aÃ±o = "1885">
 	   </disco>   
 	</discos>
 	<premios>
 	   <premio
 	      nombre =  " Teen Choice Awards "
-          año = "1890">
+          aÃ±o = "1890">
 	   </premio>
 	</premios>
     <universidades>
 	   <universidad
 	       nombre = "The Univeristy of New Orleans"
-		   añoInicio = "1840"
-		   añoFin = "1845"
+		   aÃ±oInicio = "1840"
+		   aÃ±oFin = "1845"
 		   titulo = "Musician">
 	   </universidad>
 	</universidades>
@@ -500,25 +497,25 @@ INSERT INTO musician
 	</sellos>
 	<discos>
 	   <disco
-	       nombre  = "Rossini·Otello"
-	       año = "1860">
+	       nombre  = "RossiniÂ·Otello"
+	       aÃ±o = "1860">
 	   </disco>
 	   <disco
-	       nombre  = "Misas para órgano"
-	       año = "1870">
+	       nombre  = "Misas para Ã³rgano"
+	       aÃ±o = "1870">
 	   </disco>   
 	</discos>
 	<premios>
 	   <premio
 	      nombre =  " Billboard Music Award "
-          año = "1890">
+          aÃ±o = "1890">
 	   </premio>
 	</premios>
     <universidades>
 	   <universidad
 	       nombre = "Virginia Tech"
-		   añoInicio = "1850"
-		   añoFin = "1860"
+		   aÃ±oInicio = "1850"
+		   aÃ±oFin = "1860"
 		   titulo = "Musician">
 	   </universidad>
 	</universidades>
@@ -536,7 +533,7 @@ INSERT INTO musician
 );		
 /*B. Consultando*/
 /*1)
- Los otros nombres de un músico*/
+ Los otros nombres de un mÃºsico*/
 
 SELECT 
      m_no,
@@ -544,7 +541,7 @@ SELECT
      EXTRACT(detalle,'//otroNombre/@nombre') AS OtroNombre
 FROM musician;
 /*2)
-Los músicos de un sello específico
+Los mÃºsicos de un sello especÃ­fico
 */
 
 SELECT 
@@ -557,50 +554,50 @@ FROM musician M,
 ORDER BY sello,m_name ;
 
 /*3)
-El músico más premiado en un año específico*/
+El mÃºsico mÃ¡s premiado en un aÃ±o especÃ­fico*/
 
-CREATE VIEW años
+CREATE VIEW aÃ±os
  AS 
 SELECT 
      m_name T1,
      premio,
-     año
+     aÃ±o
 FROM 
     musician M, 
     XMLTABLE('//premio'
             passing M.detalle 
             columns 
                premio VARCHAR( 10 ) PATH '@nombre',
-               año NUMBER PATH '@año'
+               aÃ±o NUMBER PATH '@aÃ±o'
             ) ;
 SELECT 
        m_name,
        premio,
-	   año
+	   aÃ±o
 FROM 
     musician 
 	INNER JOIN 
-	años 
+	aÃ±os 
 	  ON T1 = m_name
 ;
 
-DROP VIEW años;
+DROP VIEW aÃ±os;
 
 /*4)
-Los discos de un año dado*/
+Los discos de un aÃ±o dado*/
 
 SELECT 
      disco_,
-     año
+     aÃ±o
 FROM musician, 
      XMLTABLE('//disco'
              passing detalle
              columns 
                     disco_ VARCHAR(10) PATH '@nombre',
-                    año NUMBER PATH '@año')
-ORDER BY año;
+                    aÃ±o NUMBER PATH '@aÃ±o')
+ORDER BY aÃ±o;
 /*5)
-Los músicos que estudiaron en la misma universidad*/
+Los mÃºsicos que estudiaron en la misma universidad*/
 
 SELECT 
      m_name,
@@ -644,17 +641,17 @@ SELECT
      m_no,
      m_name,
      uni,
-     añoIni,
-     añoFin
+     aÃ±oIni,
+     aÃ±oFin
 FROM musician,
      XMLTABLE( '//universidad'
               passing detalle 
               columns
                     uni VARCHAR( 15 ) PATH '@nombre',
-                    añoIni NUMBER PATH '@añoInicio',
-                    añoFin  NUMBER PATH '@añoFin'
+                    aÃ±oIni NUMBER PATH '@aÃ±oInicio',
+                    aÃ±oFin  NUMBER PATH '@aÃ±oFin'
               )
-WHERE  1760<=añoFin  AND añoFin <= 1820 ;
+WHERE  1760<=aÃ±oFin  AND aÃ±oFin <= 1820 ;
 
      
 /*10) muestre los sitios web de caada uno de los musicos*/
@@ -685,18 +682,18 @@ FROM musician;
    <!ELEMENT disco EMPTY >
    <!ATTLIST disco  
              nombre CDATA #REQUIRED
-             año CDATA #REQUIRED >
+             aÃ±o CDATA #REQUIRED >
    <!ELEMENT premios ( premio* )>
    <!ELEMENT premio EMPTY >
    <!ATTLIST premio 
              nombre CDATA #REQUIRED 
-             año CDATA #REQUIRED >
+             aÃ±o CDATA #REQUIRED >
    <!ELEMENT universidades ( universidad* )>
    <!ELEMENT universidad EMPTY >
    <!ATTLIST universidad 
              nombre CDATA #REQUIRED  
-             añoInicio CDATA #REQUIRED 
-             añoFin CDATA #IMPLIED
+             aÃ±oInicio CDATA #REQUIRED 
+             aÃ±oFin CDATA #IMPLIED
              titulo CDATA #IMPLIED >
    <!ELEMENT hijos ( hijo* )>
    <!ELEMENT hijo EMPTY >
@@ -707,7 +704,7 @@ FROM musician;
 */
 
 /*Proponga e implemente otras tres restricciones*/
-/*1) el sexo de los hijos debe ser Masculino ó Femenino*/
+/*1) el sexo de los hijos debe ser Masculino Ã³ Femenino*/
 
 /*2)debe existir almenos 1 sello  por cada musico*/
 
