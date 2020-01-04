@@ -1,4 +1,4 @@
--------------------------------PoblarOK ( Adicionar información a la tabla )-------------------------------
+-------------------------------PoblarOK ( Adicionar informaciÃ³n a la tabla )-------------------------------
 ---Se crearon plantillas para hacer el poblado de las tablas---
 
 ---Poblar la base de datos con los datos iniciales ---
@@ -220,8 +220,8 @@ INSERT INTO performance_ VALUES(20,4,12,10,3);
 
 
 --------------------------------------------------PoblarNoOK--------------------------------------------------
---el siguiente ejemplo ilustra la proteccion ya que, en la tabla place la llave 10 es pk y ya existe. 
-
+--el siguiente ejemplo ilustra la proteccion ya que, en la tabla place la llave 9 es pk y ya existe. 
+--INSERT INTO place VALUES(9,'Bogota','Colombia');
 
 --insertar valores con llaves foraneas que no existen; en este caso el atributo con numero 12 no existe en la tabla place
 --INSERT INTO musician VALUES(24,'Alejandra Perez',TO_DATE(' 1958/05/12','YYYY/MM/DD'),NULL,6,12);
