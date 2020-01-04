@@ -1,110 +1,213 @@
 -------------------------------Crear la base de datos sin restricciones (Tablas) -------------------------------
 
-CREATE TABLE band (band_no NUMBER( 11 )   NOT NULL  , band_name VARCHAR( 20 ) , band_home NUMBER( 11 ) NOT NULL,     
-   band_type VARCHAR( 15 )  , b_date DATE , band_contact NUMBER( 11 ) NOT NULL
+CREATE TABLE band (
+    band_no NUMBER( 11 )   NOT NULL  ,
+	band_name VARCHAR( 20 ) , 
+	band_home NUMBER( 11 ) NOT NULL,     
+	band_type VARCHAR( 15 )  , 
+	b_date DATE , 
+	band_contact NUMBER( 11 ) NOT NULL
 );
 
-CREATE TABLE composer( comp_no NUMBER ( 11 ) NOT NULL  , 
-  comp_is NUMBER( 11 ) NOT NULL , comp_type VARCHAR( 15 ) 
+CREATE TABLE composer(
+    comp_no NUMBER ( 11 ) NOT NULL  , 
+	comp_is NUMBER( 11 ) NOT NULL ,
+	comp_type VARCHAR( 15 ) 
 );
 
-CREATE TABLE composition( c_no NUMBER ( 11 ) NOT NULL   , comp_date DATE ,
-  c_title VARCHAR( 40 ) NOT NULL , c_in NUMBER( 11 ) 
+CREATE TABLE composition( 
+    c_no NUMBER ( 11 ) NOT NULL   , 
+	comp_date DATE ,
+	c_title VARCHAR( 40 ) NOT NULL ,
+	c_in NUMBER( 11 ) 
 );
 
-CREATE TABLE concert( concert_no NUMBER( 1 ) NOT NULL  , concert_venue VARCHAR( 45 ) , 
-  concert_in NUMBER( 1 ) NOT NULL , con_date DATE , concert_orgniser NUMBER( 2 )
+CREATE TABLE concert( 
+    concert_no NUMBER( 1 ) NOT NULL  , 
+	concert_venue VARCHAR( 45 ) , 
+	concert_in NUMBER( 1 ) NOT NULL , 
+	con_date DATE ,
+	concert_orgniser NUMBER( 2 )
 );
 
-CREATE TABLE has_composed( cmpr_no NUMBER( 11 ) NOT NULL  , cmpn_no NUMBER( 11 ) NOT NULL  );
+CREATE TABLE has_composed( 
+    cmpr_no NUMBER( 11 ) NOT NULL  , 
+	cmpn_no NUMBER( 11 ) NOT NULL 
+);
 
-CREATE TABLE musician( m_no NUMBER( 11 ) NOT NULL , m_name VARCHAR( 20 )   , 
-  born DATE  , died DATE , born_in NUMBER ( 11 )  , living_in NUMBER( 11 )   
+CREATE TABLE musician(
+    m_no NUMBER( 11 ) NOT NULL ,
+	m_name VARCHAR( 20 )   , 
+	born DATE  , 
+	died DATE , 
+	born_in NUMBER ( 11 )  ,
+	living_in NUMBER( 11 )   
 ) ;
 
-CREATE TABLE performance_( pfrmnc_no NUMBER( 11 ) NOT NULL  , 
-  gave NUMBER( 11 ) , performed  NUMBER ( 11 ) , conducted_by  NUMBER( 11 ) , performed_in NUMBER( 11 )  
+CREATE TABLE performance_( 
+    pfrmnc_no NUMBER( 11 ) NOT NULL  , 
+	gave NUMBER( 11 ) ,
+	performed  NUMBER ( 11 ) ,
+	conducted_by  NUMBER( 11 ) ,
+	performed_in NUMBER( 11 )  
 );
 
-CREATE TABLE performer( perf_no NUMBER( 11 ) NOT NULL  ,
-  perf_is NUMBER( 11 ), instrument  VARCHAR( 15 ) NOT  NULL , perf_type  VARCHAR( 15 ) 
+CREATE TABLE performer( 
+    perf_no NUMBER( 11 ) NOT NULL  ,
+	perf_is NUMBER( 11 ), 
+	instrument  VARCHAR( 15 ) NOT  NULL ,
+	perf_type  VARCHAR( 15 ) 
 );
 
-CREATE TABLE place( place_no NUMBER( 11 ) NOT NULL , 
-  place_town  VARCHAR( 15 ) , place_country VARCHAR( 15 )   
+CREATE TABLE place( 
+    place_no NUMBER( 11 ) NOT NULL , 
+    place_town  VARCHAR( 15 ) , 
+	place_country VARCHAR( 15 )   
 );
 
-CREATE TABLE plays_in( player NUMBER( 11 ) NOT NULL, band_id NUMBER( 11 ) NOT NULL );
+CREATE TABLE plays_in(
+    player NUMBER( 11 ) NOT NULL,
+	band_id NUMBER( 11 ) NOT NULL 
+);
 
 
 -------------------------------Adicionar las restricciones a la base de datos (Atributos, Primarias, Únicas, Foraneas )-------------------------------
 
-------------------------------Claves primarias para todas las tablas ------------------------------
+--Claves primarias para todas las tablas 
 
-ALTER TABLE musician ADD CONSTRAINT PK_musician PRIMARY KEY ( m_no );
+ALTER TABLE musician 
+ADD CONSTRAINT PK_musician 
+PRIMARY KEY ( m_no );
 
-ALTER TABLE performer ADD CONSTRAINT PK_performer PRIMARY KEY ( perf_no );
+ALTER TABLE performer 
+ADD CONSTRAINT PK_performer
+PRIMARY KEY ( perf_no );
 
-ALTER TABLE composer ADD CONSTRAINT PK_composer PRIMARY KEY ( comp_no );
+ALTER TABLE composer 
+ADD CONSTRAINT PK_composer
+PRIMARY KEY ( comp_no );
 
-ALTER TABLE place ADD CONSTRAINT PK_place PRIMARY KEY ( place_no );
+ALTER TABLE place 
+ADD CONSTRAINT PK_place 
+PRIMARY KEY ( place_no );
 
-ALTER TABLE concert ADD CONSTRAINT PK_concert PRIMARY KEY ( concert_no );
+ALTER TABLE concert 
+ADD CONSTRAINT PK_concert 
+PRIMARY KEY ( concert_no );
 
-ALTER TABLE plays_in  ADD CONSTRAINT PK_plays_in PRIMARY KEY ( player, band_id );
+ALTER TABLE plays_in  
+ADD CONSTRAINT PK_plays_in 
+PRIMARY KEY ( player, band_id );
 
-ALTER TABLE has_composed  ADD CONSTRAINT PK_has_composed PRIMARY KEY ( cmpr_no,cmpn_no );
+ALTER TABLE has_composed  
+ADD CONSTRAINT PK_has_composed 
+PRIMARY KEY ( cmpr_no,cmpn_no );
 
-ALTER TABLE band  ADD CONSTRAINT PK_band PRIMARY KEY ( band_no );
+ALTER TABLE band  
+ADD CONSTRAINT PK_band 
+PRIMARY KEY ( band_no );
 
-ALTER TABLE performance_  ADD CONSTRAINT PK_performance_ PRIMARY KEY ( pfrmnc_no );
+ALTER TABLE performance_  
+ADD CONSTRAINT PK_performance_ 
+PRIMARY KEY ( pfrmnc_no );
 
-ALTER TABLE composition  ADD CONSTRAINT PK_composition PRIMARY KEY ( c_no );
+ALTER TABLE composition  
+ADD CONSTRAINT PK_composition 
+PRIMARY KEY ( c_no );
 
-------------------------------Claves UNICAS para las tablas ------------------------------
 
-ALTER TABLE place ADD CONSTRAINT UK_place UNIQUE ( place_town ,place_country  );
+--Claves UNICAS para las tablas 
 
-ALTER TABLE composition ADD  CONSTRAINT UK_composition_c_title UNIQUE (c_title);
+ALTER TABLE place 
+ADD CONSTRAINT UK_place 
+UNIQUE ( place_town ,place_country  );
 
-ALTER TABLE band  ADD CONSTRAINT UK_band UNIQUE ( band_name );
+ALTER TABLE composition 
+ADD  CONSTRAINT UK_composition_c_title
+UNIQUE (c_title);
 
-------------------------------Claves Foraneas  para todas las tablas ------------------------------
+ALTER TABLE band 
+ADD CONSTRAINT UK_band 
+UNIQUE ( band_name );
 
-ALTER TABLE musician ADD CONSTRAINT FK_musicianPborn FOREIGN KEY( born_in ) REFERENCES place ( place_no );
-ALTER TABLE musician ADD CONSTRAINT FK_musicianPliving FOREIGN KEY( living_in ) REFERENCES place ( place_no );
+--Claves Foraneas  para todas las tablas 
 
-ALTER TABLE performer ADD CONSTRAINT FK_performerMperf_is FOREIGN KEY( perf_is ) REFERENCES musician  ( m_no );
+ALTER TABLE musician 
+ADD CONSTRAINT FK_musicianPborn 
+FOREIGN KEY( born_in ) REFERENCES place ( place_no );
 
-ALTER TABLE composer ADD CONSTRAINT FK_composerMcomp_is FOREIGN KEY( comp_is  ) REFERENCES musician  ( m_no );
+ALTER TABLE musician 
+ADD CONSTRAINT FK_musicianPliving 
+FOREIGN KEY( living_in ) REFERENCES place ( place_no );
 
-ALTER TABLE has_composed ADD CONSTRAINT FK_has_composedCcmpr_no FOREIGN KEY( cmpr_no  ) REFERENCES composer  ( comp_no );
-ALTER TABLE has_composed ADD CONSTRAINT FK_has_composedCocmpn_no FOREIGN KEY( cmpn_no  ) REFERENCES composition  ( c_no );
+ALTER TABLE performer 
+ADD CONSTRAINT FK_performerMperf_is 
+FOREIGN KEY( perf_is ) REFERENCES musician  ( m_no );
 
-ALTER TABLE composition ADD CONSTRAINT FK_compositionPc_in FOREIGN KEY( c_in ) REFERENCES place ( place_no );
+ALTER TABLE composer
+ADD CONSTRAINT FK_composerMcomp_is 
+FOREIGN KEY( comp_is  ) REFERENCES musician  ( m_no );
 
-ALTER TABLE concert ADD CONSTRAINT FK_concertPconcert_in FOREIGN KEY( concert_in ) REFERENCES place ( place_no );
-ALTER TABLE concert ADD CONSTRAINT FK_concertMconcert_organiser FOREIGN KEY( concert_orgniser ) REFERENCES musician ( m_no );
+ALTER TABLE has_composed 
+ADD CONSTRAINT FK_has_composedCcmpr_no 
+FOREIGN KEY( cmpr_no  ) REFERENCES composer  ( comp_no );
 
-ALTER TABLE plays_in ADD CONSTRAINT FK_plays_inPe_player FOREIGN KEY( player ) REFERENCES performer ( perf_no );
-ALTER TABLE plays_in ADD CONSTRAINT FK_plays_inBband_id FOREIGN KEY( band_id ) REFERENCES band ( band_no );
+ALTER TABLE has_composed 
+ADD CONSTRAINT FK_has_composedCocmpn_no 
+FOREIGN KEY( cmpn_no  ) REFERENCES composition  ( c_no );
 
-ALTER TABLE band ADD CONSTRAINT FKbandMband_home FOREIGN KEY( band_home ) REFERENCES place ( place_no );
-ALTER TABLE band ADD CONSTRAINT FKbandMband_contact FOREIGN KEY( band_contact ) REFERENCES musician  ( m_no );
+ALTER TABLE composition 
+ADD CONSTRAINT FK_compositionPc_in 
+FOREIGN KEY( c_in ) REFERENCES place ( place_no );
 
-ALTER TABLE performance_ ADD CONSTRAINT FKperformComp_performed FOREIGN KEY( performed ) REFERENCES composition  ( c_no );
-ALTER TABLE performance_ ADD CONSTRAINT FKperformMconducted_by FOREIGN KEY( conducted_by ) REFERENCES musician  ( m_no );
-ALTER TABLE performance_ ADD CONSTRAINT FKperformConc_performed_in FOREIGN KEY( performed_in ) REFERENCES concert  ( concert_no );
-ALTER TABLE performance_ ADD CONSTRAINT FKperformBgave FOREIGN KEY( gave ) REFERENCES band  ( band_no );
+ALTER TABLE concert 
+ADD CONSTRAINT FK_concertPconcert_in 
+FOREIGN KEY( concert_in ) REFERENCES place ( place_no );
 
--------------------------------PoblarOK ( Adicionar información a la tabla )-------------------------------
+ALTER TABLE concert 
+ADD CONSTRAINT FK_concertMconcert_organiser 
+FOREIGN KEY( concert_orgniser ) REFERENCES musician ( m_no );
 
----Se crearon plantillas para hacer el poblado de las tablas
+ALTER TABLE plays_in 
+ADD CONSTRAINT FK_plays_inPe_player 
+FOREIGN KEY( player ) REFERENCES performer ( perf_no );
 
----Poblar la base de datos con los datos iniciales ---
+ALTER TABLE plays_in 
+ADD CONSTRAINT FK_plays_inBband_id 
+FOREIGN KEY( band_id ) REFERENCES band ( band_no );
 
--------------------------------valores place -------------------------------
-/*
+ALTER TABLE band 
+ADD CONSTRAINT FKbandMband_home 
+FOREIGN KEY( band_home ) REFERENCES place ( place_no );
+
+ALTER TABLE band 
+ADD CONSTRAINT FKbandMband_contact 
+FOREIGN KEY( band_contact ) REFERENCES musician  ( m_no );
+
+ALTER TABLE performance_ 
+ADD CONSTRAINT FKperformComp_performed 
+FOREIGN KEY( performed ) REFERENCES composition  ( c_no );
+
+ALTER TABLE performance_ 
+ADD CONSTRAINT FKperformMconducted_by
+FOREIGN KEY( conducted_by ) REFERENCES musician  ( m_no );
+
+ALTER TABLE performance_ 
+ADD CONSTRAINT FKperformConc_performed_in 
+FOREIGN KEY( performed_in ) REFERENCES concert  ( concert_no );
+
+ALTER TABLE performance_
+ADD CONSTRAINT FKperformBgave 
+FOREIGN KEY( gave ) REFERENCES band  ( band_no );
+
+--PoblarOK ( Adicionar información a la tabla 
+
+/*Se crearon plantillas para hacer el poblado de las tablas
+
+Poblar la base de datos con los datos iniciales
+
+--valores place 
+
 SELECT 
     'INSERT INTO place VALUES('||place_no||','||place_town||','||place_country||');' 
 FROM place;
@@ -121,8 +224,7 @@ INSERT INTO place VALUES(7,'London','England');
 INSERT INTO place VALUES(8,'Chicago','USA');
 INSERT INTO place VALUES(9,'Amsterdam','Netherlands');
 
--------------------------------valores musician -------------------------------
-
+--valores musician 
 
 /*
 
@@ -155,13 +257,14 @@ INSERT INTO musician VALUES(20,'Louise Simpson',TO_DATE('1948/01/10','YYYY/MM/DD
 INSERT INTO musician VALUES(21,'James Steeple',TO_DATE('1947/01/10','YYYY/MM/DD'),NULL,5,6);
 INSERT INTO musician VALUES(22,'Steven Chaytors',TO_DATE('1956/03/11','YYYY/MM/DD'),NULL,6,7);
 
--------------------------------valores composer -------------------------------
+--valores composer 
 
 /*
 SELECT  
     'INSERT INTO composer VALUES('||comp_no||','||comp_is||','||comp_type||');' 
 FROM composer;
 */
+
 INSERT INTO composer VALUES(1,1,'jazz');
 INSERT INTO composer VALUES(2,3,'classical');
 INSERT INTO composer VALUES(3,5,'jazz');
@@ -409,13 +512,31 @@ INSERT INTO has_composed VALUES(14,23);
 ------------------- Easy Questions --------------------------------------------
 
 ---1
-SELECT m_name FROM 
-     concert JOIN musician ON concert_orgniser =  m_no
-  WHERE con_date > TO_DATE('1997/02/01','YYYY/MM/DD') AND concert_venue = 'Assembly Rooms';
+SELECT 
+    m_name 
+FROM 
+    concert 
+	INNER JOIN 
+	musician 
+	    ON concert_orgniser =  m_no
+WHERE 
+    con_date > TO_DATE('1997/02/01','YYYY/MM/DD') AND 
+	concert_venue = 'Assembly Rooms';
 
 ---2
-SELECT m_name  FROM ( SELECT m_name, born_in  FROM  performer INNER JOIN musician ON perf_is =  m_no 
-   WHERE instrument = 'guitar'  or instrument =  'violin' ) New_table INNER JOIN place ON born_in = place_no  
+SELECT 
+    m_name  
+FROM ( SELECT 
+            m_name, 
+			born_in 
+		FROM  
+		    performer 
+		    INNER JOIN 
+			musician 
+			    ON perf_is =  m_no 
+        WHERE instrument = 'guitar'  OR instrument =  'violin' ) New_table 
+	INNER JOIN place 
+	    ON born_in = place_no  
 WHERE place_country = 'England';
 
 ---3
@@ -446,27 +567,29 @@ WHERE perf_is =  m_no AND died IS NULL AND m_name <> 'Theo Mengel' AND
 instrument IN ( SELECT DISTINCT instrument FROM musician, performer  WHERE  perf_is =  m_no AND  m_name = 'Theo Mengel' );
 
 ---7
---SELECT m_name,Num_Integra FROM (SELECT m_name,
---COUNT( m_name ) AS Num_Integra,COUNT( m_name ) / ( SELECT COUNT( m_name) FROM musician,  band, plays_in
- --  WHERE player = m_no AND band_id = band_no ) AS prom FROM musician, band, plays_in
---WHERE player = m_no AND band_id = band_no
---GROUP BY m_name) AS new
---WHERE Num_Integra > prom;
+/*
+SELECT m_name,Num_Integra FROM (SELECT m_name,
+COUNT( m_name ) AS Num_Integra,COUNT( m_name ) / ( SELECT COUNT( m_name) FROM musician,  band, plays_in
+WHERE player = m_no AND band_id = band_no ) AS prom FROM musician, band, plays_in
+WHERE player = m_no AND band_id = band_no
+GROUP BY m_name) AS new
+WHERE Num_Integra > prom;*/
 
--
+
 ---8
 SELECT m_name AS name  , place_country AS living_In 
 FROM ( (musician INNER JOIN composer ON comp_is = m_no ) INNER JOIN place ON  place_no = living_in ) 
 WHERE place_country IN ('England','Scotland','Gales');
 
 ---9
---SELECT instrument ,Num_music 
---FROM ( SELECT DISTINCT instrument , COUNT( m_no ) AS Num_music FROM 
---musician INNER JOIN performer  ON  perf_is = m_no
---GROUP BY instrument 
---) AS new_table
---WHERE Num_music <= ALL ( SELECT COUNT( perf_no ) FROM performer GROUP BY instrument );
-
+/*
+SELECT instrument ,Num_music 
+FROM ( SELECT DISTINCT instrument , COUNT( m_no ) AS Num_music FROM 
+musician INNER JOIN performer  ON  perf_is = m_no
+GROUP BY instrument 
+) AS new_table
+WHERE Num_music <= ALL ( SELECT COUNT( perf_no ) FROM performer GROUP BY instrument );
+*/
 
 --10
 SELECT DISTINCT band_name
@@ -482,117 +605,166 @@ ORDER BY band_name;
 --Jp : james place
 --pl : places 
 --Ar : artists
---SELECT m_name FROM ( SELECT born_in FROM musician  
-  --WHERE m_name = 'James First')Jp JOIN (SELECT * FROM place ) pl 
-    --JOIN ( SELECT m_name, born_in 
-  --FROM musician where m_name <> 'James First') AS Ar ON pl.place_no = 
---Ar.born_in AND  Jp.born_in =  Ar.born_in;
 
+/*
+SELECT m_name FROM ( SELECT born_in FROM musician  
+  WHERE m_name = 'James First')Jp JOIN (SELECT * FROM place ) pl 
+    JOIN ( SELECT m_name, born_in 
+  FROM musician where m_name <> 'James First') AS Ar ON pl.place_no = 
+Ar.born_in AND  Jp.born_in =  Ar.born_in;
+*/
 
 --12
---SELECT  m_name, COUNT( instrument  )Instrumento, COUNT( cmpn_no) Composicion
---FROM (((SELECT m_no, m_name, born_in FROM musician ) Mu  JOIN 
---  (SELECT place_no FROM place WHERE place_country IN 
---    ('England','Scotland','Gales'))Pl  ON Pl.place_no = Mu.born_in
---LEFT JOIN  performer ON perf_is = m_no ) 
---LEFT JOIN composer ON  comp_is = m_no )
---LEFT JOIN has_composed ON comp_no = cmpn_no
 
---GROUP BY m_name;
+/*
+SELECT  m_name, COUNT( instrument  )Instrumento, COUNT( cmpn_no) Composicion
+FROM (((SELECT m_no, m_name, born_in FROM musician ) Mu  JOIN 
+  (SELECT place_no FROM place WHERE place_country IN 
+    ('England','Scotland','Gales'))Pl  ON Pl.place_no = Mu.born_in
+LEFT JOIN  performer ON perf_is = m_no ) 
+LEFT JOIN composer ON  comp_is = m_no )
+LEFT JOIN has_composed ON comp_no = cmpn_no
+GROUP BY m_name;
+*/
 
 --13
 --conducted_by - performance
 --band_name - band 
 --band_contact- band 
 
---SELECT band_name,  m_name, Contact  FROM (SELECT band_name, m_name,band_contact
---FROM (SELECT concert_no FROM concert X
-   --WHERE concert_venue = 'Royal Albert Hall' AND
-    -- con_date IN (SELECT MAX( con_date) 
---FROM concert Y
-  -- WHERE X.concert_venue = Y.concert_venue )) New, performance, musician,band
---WHERE concert_no = performed_in AND
---gave = band_no AND conducted_by = m_no
---)RTA INNER JOIN (SELECT m_no, m_name Contact FROM musician) M ON band_contact = M.m_no
-;
+/*
+SELECT band_name,  m_name, Contact  FROM (SELECT band_name, m_name,band_contact
+FROM (SELECT concert_no FROM concert X
+   WHERE concert_venue = 'Royal Albert Hall' AND
+    con_date IN (SELECT MAX( con_date) 
+FROM concert Y
+  WHERE X.concert_venue = Y.concert_venue )) New, performance, musician,band
+WHERE concert_no = performed_in AND
+gave = band_no AND conducted_by = m_no
+)RTA INNER JOIN (SELECT m_no, m_name Contact FROM musician) M ON band_contact = M.m_no;
+*/
+
 --14
 
---(SELECT 'LIVES_IN'AS Nat, m_name  FROM musician JOIN  place ON living_in = place_no
---WHERE place_town = 'Glasgow'
---)
---UNION  
---(SELECT 'BORN_IN', m_name  FROM musician JOIN  place ON born_in = place_no
---WHERE place_town = 'Glasgow'
---)
---UNION
---( SELECT 'PERFORMED_IN', m_name  FROM musician JOIN plays_in JOIN performance JOIN concert JOIN place
---ON m_no =  player AND band_id = gave AND performed_in = concert_no AND
---concert_in = place_no
---WHERE place_town = 'Glasgow'
---)
---UNION
---( SELECT 'IN_BAND_IN', m_name  FROM ( musician  JOIN  plays_in ON player = m_no ) JOIN band ON band_id = band_no, place
---WHERE band_home =place_no AND  place_town = 'Glasgow' 
---)
---ORDER BY  Nat
---;
+/*
+(SELECT 'LIVES_IN'AS Nat, m_name  FROM musician JOIN  place ON living_in = place_no
+WHERE place_town = 'Glasgow'
+)
+UNION  
+(SELECT 'BORN_IN', m_name  FROM musician JOIN  place ON born_in = place_no
+WHERE place_town = 'Glasgow'
+)
+UNION
+( SELECT 'PERFORMED_IN', m_name  FROM musician JOIN plays_in JOIN performance JOIN concert JOIN place
+ON m_no =  player AND band_id = gave AND performed_in = concert_no AND
+concert_in = place_no
+WHERE place_town = 'Glasgow')
+UNION
+( SELECT 'IN_BAND_IN', m_name  FROM ( musician  JOIN  plays_in ON player = m_no ) JOIN band ON band_id = band_no, place
+WHERE band_home =place_no AND  place_town = 'Glasgow' 
+)
+ORDER BY  Nat;
+*/
+
 --15
 
---SELECT * FROM band, plays_in, musician, performer
---WHERE band_name IN (
---SELECT band_name FROM (musician JOIN plays_in JOIN band ON m_no = player AND
---band_id = band_no ) 
---WHERE m_name = 'Sue Little' OR m_name = 'Jeff Dawn')
- 
---AND player = perf_no AND m_no = perf_is AND band_id = band_no;
+/*
+SELECT * FROM band, plays_in, musician, performer
+WHERE band_name IN (
+SELECT band_name FROM (musician JOIN plays_in JOIN band ON m_no = player AND
+band_id = band_no ) 
+WHERE m_name = 'Sue Little' OR m_name = 'Jeff Dawn')
+ AND player = perf_no AND m_no = perf_is AND band_id = band_no;
+SELECT m_name,  place_town, con_date FROM  
+  (SELECT concert_orgniser, place_town, con_date FROM place INNER JOIN concert
+    ON concert_in = place_no WHERE place_country = 'USA ' ) 
+New_table INNER JOIN musician ON  m_no = concert_orgniser;
+*/
 
---SELECT m_name,  place_town, con_date FROM  
-  -- (SELECT concert_orgniser, place_town, con_date FROM place INNER JOIN concert
- --   ON concert_in = place_no WHERE place_country = 'USA ' ) 
---New_table INNER JOIN musician ON  m_no = concert_orgniser;
 
---------------------------------------------------PoblarNoOK--------------------------------------------------
---el siguiente ejemplo ilustra la proteccion ya que, en la tabla place la llave 10 es pk y ya existe. 
+--PoblarNoOK
+--el siguiente ejemplo ilustra la proteccion ya que, en la tabla place debido que la pk  9  ya existe. 
+/*
+INSERT INTO place(
+    VALUES(9,'Bogota','Colombia');
 
 
 --insertar valores con llaves foraneas que no existen; en este caso el atributo con numero 12 no existe en la tabla place
-INSERT INTO musician VALUES(24,'Alejandra Perez',TO_DATE(' 1958/05/12','YYYY/MM/DD'),NULL,6,12);
+INSERT INTO musician 
+    VALUES(24,'Alejandra Perez',TO_DATE(' 1958/05/12','YYYY/MM/DD'),NULL,6,12);
 
 -- una llave pk no puede ser NULL, en el caso de musician el primer atributo es la llave pk  
-INSERT INTO musician VALUES(NULL,'Alejandra Perez',TO_DATE(' 1958/05/12','YYYY/MM/DD'),NULL,6,12);
+INSERT INTO musician 
+    VALUES(NULL,'Alejandra Perez',TO_DATE(' 1958/05/12','YYYY/MM/DD'),NULL,6,12);
 
 -- una llave unica ya definida no  se puede repetir, en nuestro caso el nombre de la composicion no se debe repetir, last song ya se encuentra creada en la base de datos
-INSERT INTO composition VALUES(21,TO_DATE('1990/07/12','YYYY/MM/DD'),'A Last Song',6);
+INSERT INTO composition 
+    VALUES(21,TO_DATE('1990/07/12','YYYY/MM/DD'),'A Last Song',6);
+*/
 
+--Xpoblar ( Eliminar los datos de la base de datos 
 
--------------------------------Xpoblar ( Eliminar los datos de la base de datos )-------------------------------
+DELETE 
+FROM performance_;
 
-DELETE FROM performance_;
-DELETE FROM has_composed;
-DELETE FROM composer ;
-DELETE FROM composition;
-DELETE FROM concert;
+DELETE 
+FROM has_composed;
 
-DELETE FROM plays_in;
-DELETE FROM band;
-DELETE FROM performer;
+DELETE 
+FROM composer ;
 
-DELETE FROM musician;
-DELETE FROM place;
+DELETE 
+FROM composition;
+
+DELETE 
+FROM concert;
+
+DELETE 
+FROM plays_in;
+
+DELETE 
+FROM band;
+
+DELETE 
+FROM performer;
+
+DELETE 
+FROM musician;
+
+DELETE 
+FROM place;
 
 
 
 -------------------------------XTablas ( Eliminar las tablas de la base de datos )-------------------------------
 
+DROP TABLE band 
+CASCADE CONSTRAINTS;
 
-DROP TABLE band CASCADE CONSTRAINTS;
-DROP TABLE composer CASCADE CONSTRAINTS;
-DROP TABLE composition CASCADE CONSTRAINTS;
-DROP TABLE concert CASCADE CONSTRAINTS;
-DROP TABLE has_composed CASCADE CONSTRAINTS;
-DROP TABLE musician CASCADE CONSTRAINTS;
-DROP TABLE performance_  CASCADE CONSTRAINTS;
-DROP TABLE performer CASCADE CONSTRAINTS;
-DROP TABLE place CASCADE  CONSTRAINTS;
-DROP TABLE plays_in CASCADE CONSTRAINTS;
---
+DROP TABLE composer 
+CASCADE CONSTRAINTS;
+
+DROP TABLE composition 
+CASCADE CONSTRAINTS;
+
+DROP TABLE concert 
+CASCADE CONSTRAINTS;
+
+DROP TABLE has_composed 
+CASCADE CONSTRAINTS;
+
+DROP TABLE musician 
+CASCADE CONSTRAINTS;
+
+DROP TABLE performance_ 
+CASCADE CONSTRAINTS;
+ 
+DROP TABLE performer 
+CASCADE CONSTRAINTS;
+
+DROP TABLE place 
+CASCADE  CONSTRAINTS;
+
+DROP TABLE plays_in
+CASCADE CONSTRAINTS;
+ 
