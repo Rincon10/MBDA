@@ -1,7 +1,5 @@
-# Bases De Datos
+# Proyecto MBDA
 
-El fin del material que se encuentra en este repositorio,es afianzar conocimientos y solventar dudas **( usarlo de manera prudente )**.
-
-
-
-- Este repositorio fue realizado por **Iván Camilo Rincón Saavedra** en colaboración con **Fabian Mauricio Ramirez Pinto**.
+## Autores
+- Iván Camilo Rincón Saavedra [Rincon10](https://github.com/Rincon10)
+- Fabian Mauricio Ramirez Pinto [Fabimauri47](https://github.com/Fabimauri47)
